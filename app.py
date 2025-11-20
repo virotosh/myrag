@@ -6,9 +6,7 @@ import os
 import flask
 
 # Flask app object
-app = flask.Flask(__name__,
-                  static_url_path='/static',
-                  static_folder='/static')
+app = flask.Flask(__name__)
 
 # Routes
 @app.route("/", methods=['GET'])
@@ -16,7 +14,7 @@ def home():
     '''
       Hello page
     '''
-    return 'Hello page'
+    return "<p>Hello, World!</p>"
 
 # Entry function
 def main():
