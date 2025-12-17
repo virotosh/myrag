@@ -1,1 +1,50 @@
-Flask==3.0.0
+# FastAPI and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+websockets==12.0
+
+# Database
+sqlalchemy==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9
+
+# AI and RAG - Python 3.12 compatible versions
+langchain==0.0.335
+langchain-openai==0.0.2
+langchain-community==0.0.6
+# LangChain 0.0.335 requires langsmith >=0.0.63,<0.1.0
+# Pin to the latest compatible 0.0.x to avoid Pydantic v1 shim issues on Python 3.12
+langsmith==0.0.92
+chromadb==0.4.22
+numpy>=1.26.0,<2.0
+sentence-transformers==2.2.2
+
+# Document processing - Python 3.12 compatible versions
+pypdf2==3.0.1
+python-docx==1.1.0
+pandas==2.2.2
+openpyxl==3.1.2
+aiofiles==23.2.1
+
+# Security and auth
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.0
+
+# Utilities
+# Upgrade pydantic to fix Python 3.12 ForwardRef issues in pydantic.v1 (used transitively by langsmith)
+# 2.8.2 is a stable release with the fix; allow any 2.8.x or 2.9.x if resolver picks newer
+pydantic>=2.8.2,<3
+pydantic-settings==2.1.0
+httpx==0.25.2
+sentry-sdk[fastapi]==1.38.0
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+
+# Development
+black==23.11.0
+isort==5.12.0
+flake8==6.1.0

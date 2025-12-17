@@ -1,0 +1,135 @@
+2025-11-28 08:49:51.981 EET [1962] LOG:  starting PostgreSQL 15.15 (Homebrew) on x86_64-apple-darwin19.6.0, compiled by Apple clang version 12.0.0 (clang-1200.0.32.29), 64-bit
+2025-11-28 08:49:51.984 EET [1962] LOG:  listening on IPv6 address "::1", port 5432
+2025-11-28 08:49:51.984 EET [1962] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-11-28 08:49:51.986 EET [1962] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-11-28 08:49:51.999 EET [1962] FATAL:  postmaster became multithreaded during startup
+2025-11-28 08:49:51.999 EET [1962] HINT:  Set the LC_ALL environment variable to a valid locale.
+2025-11-28 08:49:52.000 EET [1962] LOG:  database system is shut down
+2025-11-28 08:50:12.788 EET [2011] LOG:  starting PostgreSQL 15.15 (Homebrew) on x86_64-apple-darwin19.6.0, compiled by Apple clang version 12.0.0 (clang-1200.0.32.29), 64-bit
+2025-11-28 08:50:12.789 EET [2011] LOG:  listening on IPv6 address "::1", port 5432
+2025-11-28 08:50:12.789 EET [2011] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-11-28 08:50:12.790 EET [2011] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-11-28 08:50:12.793 EET [2011] FATAL:  postmaster became multithreaded during startup
+2025-11-28 08:50:12.793 EET [2011] HINT:  Set the LC_ALL environment variable to a valid locale.
+2025-11-28 08:50:12.794 EET [2011] LOG:  database system is shut down
+2025-12-01 13:47:45.956 EET [8185] LOG:  starting PostgreSQL 15.15 (Homebrew) on x86_64-apple-darwin19.6.0, compiled by Apple clang version 12.0.0 (clang-1200.0.32.29), 64-bit
+2025-12-01 13:47:45.959 EET [8185] LOG:  listening on IPv6 address "::1", port 5432
+2025-12-01 13:47:45.959 EET [8185] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-12-01 13:47:45.960 EET [8185] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-12-01 13:47:45.975 EET [8185] FATAL:  postmaster became multithreaded during startup
+2025-12-01 13:47:45.975 EET [8185] HINT:  Set the LC_ALL environment variable to a valid locale.
+2025-12-01 13:47:45.979 EET [8185] LOG:  database system is shut down
+2025-12-01 13:48:10.040 EET [8203] LOG:  starting PostgreSQL 15.15 (Homebrew) on x86_64-apple-darwin19.6.0, compiled by Apple clang version 12.0.0 (clang-1200.0.32.29), 64-bit
+2025-12-01 13:48:10.042 EET [8203] LOG:  listening on IPv6 address "::1", port 5432
+2025-12-01 13:48:10.042 EET [8203] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-12-01 13:48:10.043 EET [8203] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-12-01 13:48:10.048 EET [8206] LOG:  database system was shut down at 2025-11-28 21:17:33 EET
+2025-12-01 13:48:10.061 EET [8203] LOG:  database system is ready to accept connections
+2025-12-01 13:53:10.039 EET [8204] LOG:  checkpoint starting: time
+2025-12-01 13:53:10.047 EET [8204] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.001 s, total=0.009 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB
+2025-12-01 21:20:21.693 EET [8203] LOG:  received smart shutdown request
+2025-12-01 21:20:21.695 EET [8203] LOG:  background worker "logical replication launcher" (PID 8209) exited with exit code 1
+2025-12-01 21:20:21.695 EET [8204] LOG:  shutting down
+2025-12-01 21:20:21.696 EET [8204] LOG:  checkpoint starting: shutdown immediate
+2025-12-01 21:20:21.700 EET [8204] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.005 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=0 kB
+2025-12-01 21:20:21.704 EET [8203] LOG:  database system is shut down
+2025-12-16 10:16:35.470 EET [4872] LOG:  starting PostgreSQL 15.15 (Homebrew) on x86_64-apple-darwin19.6.0, compiled by Apple clang version 12.0.0 (clang-1200.0.32.29), 64-bit
+2025-12-16 10:16:35.472 EET [4872] LOG:  listening on IPv6 address "::1", port 5432
+2025-12-16 10:16:35.472 EET [4872] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-12-16 10:16:35.473 EET [4872] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-12-16 10:16:35.484 EET [4872] FATAL:  postmaster became multithreaded during startup
+2025-12-16 10:16:35.484 EET [4872] HINT:  Set the LC_ALL environment variable to a valid locale.
+2025-12-16 10:16:35.486 EET [4872] LOG:  database system is shut down
+2025-12-16 10:16:52.113 EET [4880] LOG:  starting PostgreSQL 15.15 (Homebrew) on x86_64-apple-darwin19.6.0, compiled by Apple clang version 12.0.0 (clang-1200.0.32.29), 64-bit
+2025-12-16 10:16:52.115 EET [4880] LOG:  listening on IPv6 address "::1", port 5432
+2025-12-16 10:16:52.115 EET [4880] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-12-16 10:16:52.116 EET [4880] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-12-16 10:16:52.121 EET [4883] LOG:  database system was shut down at 2025-12-01 21:20:21 EET
+2025-12-16 10:16:52.136 EET [4880] LOG:  database system is ready to accept connections
+2025-12-16 10:17:14.098 EET [4894] ERROR:  unrecognized configuration parameter "databases"
+2025-12-16 10:17:14.098 EET [4894] STATEMENT:  show databases;
+2025-12-16 10:19:20.710 EET [4923] ERROR:  syntax error at or near "tabel" at character 6
+2025-12-16 10:19:20.710 EET [4923] STATEMENT:  drop tabel alembic_version
+	drop table alembic_version
+	DROP TABLE alembic_version;
+2025-12-16 10:21:52.117 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 10:21:59.824 EET [4881] LOG:  checkpoint complete: wrote 79 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=7.694 s, sync=0.008 s, total=7.708 s; sync files=61, longest=0.002 s, average=0.001 s; distance=425 kB, estimate=425 kB
+2025-12-16 10:26:52.815 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 10:26:57.578 EET [4881] LOG:  checkpoint complete: wrote 48 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.749 s, sync=0.009 s, total=4.763 s; sync files=22, longest=0.006 s, average=0.001 s; distance=129 kB, estimate=396 kB
+2025-12-16 10:31:52.568 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 10:31:54.802 EET [4881] LOG:  checkpoint complete: wrote 23 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.224 s, sync=0.008 s, total=2.235 s; sync files=17, longest=0.006 s, average=0.001 s; distance=11 kB, estimate=357 kB
+2025-12-16 10:34:24.256 EET [5246] LOG:  unexpected EOF on client connection with an open transaction
+2025-12-16 10:36:52.792 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 10:36:54.513 EET [4881] LOG:  checkpoint complete: wrote 18 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.716 s, sync=0.002 s, total=1.722 s; sync files=17, longest=0.001 s, average=0.001 s; distance=27 kB, estimate=324 kB
+2025-12-16 12:56:52.228 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 12:56:52.646 EET [4881] LOG:  checkpoint complete: wrote 5 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.408 s, sync=0.003 s, total=0.419 s; sync files=5, longest=0.002 s, average=0.001 s; distance=4 kB, estimate=292 kB
+2025-12-16 13:31:52.577 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 13:31:52.988 EET [4881] LOG:  checkpoint complete: wrote 5 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.408 s, sync=0.001 s, total=0.412 s; sync files=5, longest=0.001 s, average=0.001 s; distance=5 kB, estimate=263 kB
+2025-12-16 13:34:39.464 EET [9497] ERROR:  syntax error at or near "TABLE" at character 8
+2025-12-16 13:34:39.464 EET [9497] STATEMENT:  DELETE TABLE conversations;
+2025-12-16 13:34:45.644 EET [9497] ERROR:  cannot drop table conversations because other objects depend on it
+2025-12-16 13:34:45.644 EET [9497] DETAIL:  constraint messages_conversation_id_fkey on table messages depends on table conversations
+2025-12-16 13:34:45.644 EET [9497] HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+2025-12-16 13:34:45.644 EET [9497] STATEMENT:  DROP TABLE conversations;
+2025-12-16 13:36:52.978 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 13:36:54.620 EET [4881] LOG:  checkpoint complete: wrote 17 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.628 s, sync=0.004 s, total=1.642 s; sync files=13, longest=0.003 s, average=0.001 s; distance=99 kB, estimate=247 kB
+2025-12-16 13:41:52.609 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 13:41:59.945 EET [4881] LOG:  checkpoint complete: wrote 73 buffers (0.4%); 0 WAL file(s) added, 0 removed, 1 recycled; write=7.324 s, sync=0.008 s, total=7.337 s; sync files=57, longest=0.002 s, average=0.001 s; distance=332 kB, estimate=332 kB
+2025-12-16 13:46:52.936 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 13:46:53.144 EET [4881] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.202 s, sync=0.003 s, total=0.209 s; sync files=3, longest=0.002 s, average=0.001 s; distance=2 kB, estimate=299 kB
+2025-12-16 13:51:08.375 EET [9827] ERROR:  duplicate key value violates unique constraint "ix_conversations_session_id"
+2025-12-16 13:51:08.375 EET [9827] DETAIL:  Key (session_id)=(string) already exists.
+2025-12-16 13:51:08.375 EET [9827] STATEMENT:  INSERT INTO conversations (title, session_id, total_messages, is_active, updated_at, last_message_at) VALUES (NULL, 'string', 0, true, NULL, NULL) RETURNING conversations.id, conversations.created_at
+2025-12-16 13:51:52.133 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 13:51:54.262 EET [4881] LOG:  checkpoint complete: wrote 22 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.117 s, sync=0.008 s, total=2.129 s; sync files=16, longest=0.006 s, average=0.001 s; distance=18 kB, estimate=271 kB
+2025-12-16 13:56:52.251 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 13:56:53.275 EET [4881] LOG:  checkpoint complete: wrote 11 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.010 s, sync=0.007 s, total=1.024 s; sync files=10, longest=0.006 s, average=0.001 s; distance=10 kB, estimate=245 kB
+2025-12-16 14:01:52.264 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 14:01:52.984 EET [4881] LOG:  checkpoint complete: wrote 8 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.707 s, sync=0.009 s, total=0.720 s; sync files=8, longest=0.007 s, average=0.002 s; distance=15 kB, estimate=222 kB
+2025-12-16 14:36:52.914 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 14:36:54.141 EET [4881] LOG:  checkpoint complete: wrote 13 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.215 s, sync=0.004 s, total=1.228 s; sync files=13, longest=0.002 s, average=0.001 s; distance=12 kB, estimate=201 kB
+2025-12-16 14:41:52.131 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 14:41:52.847 EET [4881] LOG:  checkpoint complete: wrote 8 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.707 s, sync=0.003 s, total=0.716 s; sync files=8, longest=0.002 s, average=0.001 s; distance=17 kB, estimate=183 kB
+2025-12-16 14:46:52.837 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 14:46:54.361 EET [4881] LOG:  checkpoint complete: wrote 16 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.515 s, sync=0.007 s, total=1.525 s; sync files=14, longest=0.006 s, average=0.001 s; distance=30 kB, estimate=167 kB
+2025-12-16 14:57:56.344 EET [11256] ERROR:  duplicate key value violates unique constraint "ix_conversations_session_id"
+2025-12-16 14:57:56.344 EET [11256] DETAIL:  Key (session_id)=(3af90f73-0715-46c8-9460-1b75bd955e2b) already exists.
+2025-12-16 14:57:56.344 EET [11256] STATEMENT:  INSERT INTO conversations (title, session_id, total_messages, is_active, updated_at, last_message_at) VALUES (NULL, '3af90f73-0715-46c8-9460-1b75bd955e2b', 0, true, NULL, NULL) RETURNING conversations.id, conversations.created_at
+2025-12-16 14:59:58.959 EET [11256] ERROR:  duplicate key value violates unique constraint "ix_conversations_session_id"
+2025-12-16 14:59:58.959 EET [11256] DETAIL:  Key (session_id)=(abc) already exists.
+2025-12-16 14:59:58.959 EET [11256] STATEMENT:  INSERT INTO conversations (title, session_id, total_messages, is_active, updated_at, last_message_at) VALUES (NULL, 'abc', 0, true, NULL, NULL) RETURNING conversations.id, conversations.created_at
+2025-12-16 15:01:52.331 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:01:53.554 EET [4881] LOG:  checkpoint complete: wrote 13 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.211 s, sync=0.005 s, total=1.224 s; sync files=13, longest=0.003 s, average=0.001 s; distance=15 kB, estimate=152 kB
+2025-12-16 15:06:04.146 EET [11460] ERROR:  duplicate key value violates unique constraint "ix_conversations_session_id"
+2025-12-16 15:06:04.146 EET [11460] DETAIL:  Key (session_id)=(string) already exists.
+2025-12-16 15:06:04.146 EET [11460] STATEMENT:  INSERT INTO conversations (title, session_id, total_messages, is_active, updated_at, last_message_at) VALUES (NULL, 'string', 0, true, NULL, NULL) RETURNING conversations.id, conversations.created_at
+2025-12-16 15:06:52.545 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:06:53.767 EET [4881] LOG:  checkpoint complete: wrote 13 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.216 s, sync=0.003 s, total=1.222 s; sync files=11, longest=0.002 s, average=0.001 s; distance=28 kB, estimate=140 kB
+2025-12-16 15:21:52.735 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:21:53.855 EET [4881] LOG:  checkpoint complete: wrote 12 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.112 s, sync=0.003 s, total=1.120 s; sync files=12, longest=0.002 s, average=0.001 s; distance=20 kB, estimate=128 kB
+2025-12-16 15:31:52.834 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:31:54.799 EET [4881] LOG:  checkpoint complete: wrote 20 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.918 s, sync=0.046 s, total=1.965 s; sync files=20, longest=0.016 s, average=0.003 s; distance=38 kB, estimate=119 kB
+2025-12-16 15:36:52.789 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:37:00.498 EET [4881] LOG:  checkpoint complete: wrote 77 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=7.692 s, sync=0.008 s, total=7.710 s; sync files=59, longest=0.004 s, average=0.001 s; distance=388 kB, estimate=388 kB
+2025-12-16 15:41:52.489 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:41:55.164 EET [4881] LOG:  checkpoint complete: wrote 27 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.662 s, sync=0.010 s, total=2.676 s; sync files=21, longest=0.005 s, average=0.001 s; distance=18 kB, estimate=351 kB
+2025-12-16 15:46:52.154 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:46:53.476 EET [4881] LOG:  checkpoint complete: wrote 14 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.308 s, sync=0.007 s, total=1.322 s; sync files=13, longest=0.006 s, average=0.001 s; distance=15 kB, estimate=317 kB
+2025-12-16 15:51:52.465 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:51:53.603 EET [4881] LOG:  checkpoint complete: wrote 12 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.123 s, sync=0.012 s, total=1.139 s; sync files=12, longest=0.006 s, average=0.001 s; distance=16 kB, estimate=287 kB
+2025-12-16 15:56:52.594 EET [4881] LOG:  checkpoint starting: time
+2025-12-16 15:56:53.820 EET [4881] LOG:  checkpoint complete: wrote 13 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.211 s, sync=0.007 s, total=1.227 s; sync files=13, longest=0.006 s, average=0.001 s; distance=13 kB, estimate=260 kB
+2025-12-16 21:36:54.642 EET [4880] LOG:  received smart shutdown request
+2025-12-16 21:36:54.646 EET [4880] LOG:  background worker "logical replication launcher" (PID 4886) exited with exit code 1
+2025-12-16 21:36:54.646 EET [4881] LOG:  shutting down
+2025-12-16 21:36:54.647 EET [4881] LOG:  checkpoint starting: shutdown immediate
+2025-12-16 21:36:54.652 EET [4881] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.006 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=234 kB
+2025-12-16 21:36:54.656 EET [4880] LOG:  database system is shut down
+2025-12-17 09:19:12.704 EET [3577] LOG:  starting PostgreSQL 15.15 (Homebrew) on x86_64-apple-darwin19.6.0, compiled by Apple clang version 12.0.0 (clang-1200.0.32.29), 64-bit
+2025-12-17 09:19:12.708 EET [3577] LOG:  listening on IPv6 address "::1", port 5432
+2025-12-17 09:19:12.708 EET [3577] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-12-17 09:19:12.708 EET [3577] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-12-17 09:19:12.745 EET [3580] LOG:  database system was shut down at 2025-12-16 21:36:54 EET
+2025-12-17 09:19:12.757 EET [3577] LOG:  database system is ready to accept connections
+2025-12-17 09:24:12.737 EET [3578] LOG:  checkpoint starting: time
+2025-12-17 09:24:13.150 EET [3578] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.407 s, sync=0.003 s, total=0.414 s; sync files=6, longest=0.002 s, average=0.001 s; distance=5 kB, estimate=5 kB
