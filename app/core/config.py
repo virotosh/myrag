@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     # LLM configuration
     llm_model: str = "gpt-5.1"
     llm_temperature: float = 1
-    llm_max_tokens: int = 1000
+    llm_max_tokens: int = 5000
     
     # Vector Database
     chroma_persist_directory: str = "./chroma_db"
