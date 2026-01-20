@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # OpenAI
     openai_api_key: str
     # LLM configuration
-    llm_model: str = "gpt-5.1"
+    llm_model: str = "gpt-4.1"
     llm_temperature: float = 1
     llm_max_tokens: int = 5000
     
