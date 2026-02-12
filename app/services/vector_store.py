@@ -140,7 +140,8 @@ class VectorStoreService:
     async def get_relevant_context(
         self, 
         query: str, 
-        max_chunks: int = 5,
+        max_chunks: int = 50,
+        chunks_used: int = 5,
         document_ids: Optional[List[int]] = None
     ) -> Dict[str, Any]:
         """
@@ -195,9 +196,10 @@ class VectorStoreService:
             average_score = sum(scores) / len(scores) if scores else 0.0
             
             result = {
-                "context_chunks": context_chunks,
-                "source_documents": source_documents,
-                "total_chunks": len(context_chunks),
+                "context_chunks": context_chunks[:chunks_used],
+                "source_documents": source_documents[:chunks_used],
+                "source_documents_notused": source_documents[chunks_used:],
+                "total_chunks": len(context_chunks[:chunks_used]),
                 "average_score": average_score,
                 "query": query
             }
