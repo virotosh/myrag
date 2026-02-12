@@ -152,7 +152,7 @@ class RAGService:
                 document_ids=document_ids,
                 **llm_kwargs
             )
-            logger.info(f"AI response: {response_data}")
+            #logger.info(f"AI response: {response_data}")
             logger.info(f"RAG response generated successfully")
             return response_data
             

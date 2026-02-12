@@ -75,16 +75,24 @@ class MessageUpdate(BaseModel):
     # Avoid conflict with protected namespace 'model_'
     model_config = ConfigDict(protected_namespaces=())
 
+class DocumentMetadata(BaseModel):
+    """Schema for source document references."""
+    doi: str
+    title: List[str]
+    s2orcauthors: List[str]
+    crossrefauthors: List[str]
+    venue: str
+    year: int
+    url: str
 
 class SourceDocument(BaseModel):
     """Schema for source document references."""
     document_id: int
     filename: str
-    document_metadata: str
+    document_metadata: DocumentMetadata #str
     chunk_id: str
     relevance_score: float
     content_snippet: str
-
 
 class MessageResponse(MessageBase):
     """Schema for message API responses."""

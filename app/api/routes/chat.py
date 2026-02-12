@@ -147,13 +147,17 @@ async def send_message(
         ai_message = Message(**ai_message_data.dict())
         
         # Add RAG metadata
-        ai_message.sources_used = json.dumps(response_data.get('sources_used', []))
+        sources_used = response_data.get('sources_used', [])
+        print(sources_used)
+        for source in sources_used:
+            source['document_metadata'] = json.loads(source['document_metadata'])
+        #print(sources_used)
+        ai_message.sources_used = json.dumps(sources_used) #response_data.get('sources_used', []))
         ai_message.context_chunks = json.dumps(response_data.get('context_chunks', []))
         ai_message.relevance_score = response_data.get('relevance_score')
         ai_message.tokens_used = response_data.get('tokens_used')
         ai_message.processing_time = response_data.get('processing_time')
         ai_message.model_used = response_data.get('model_used')
-        
         db.add(ai_message)
         
         # Update conversation metadata
