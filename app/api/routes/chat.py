@@ -148,7 +148,7 @@ async def send_message(
         
         # Add RAG metadata
         sources_used = response_data.get('sources_used', [])
-        print(sources_used)
+        logger.info(f"sources_used {sources_used}")
         for source in sources_used:
             source['document_metadata'] = json.loads(source['document_metadata'])
         #print(sources_used)
