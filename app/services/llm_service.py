@@ -84,7 +84,7 @@ Always maintain a helpful and professional tone."""
                 )
             
             # Build messages for chat completion
-            context_info['context_chunks'] = context_info['context_chunks'][:5] # limit to 5 chunks used for context to RAG
+            context_info['context_chunks'] = context_info['context_chunks'][:3] # limit to 3 chunks used for context to RAG
             messages = self._build_messages(
                 user_query=user_query,
                 context_info=context_info,
@@ -131,7 +131,7 @@ Always maintain a helpful and professional tone."""
                 'relevance_score': relevance_score,
                 'context_info': context_info,
                 'sources_used': context_info.get('source_documents', []),
-                'context_chunks': context_info.get('context_chunks', [])#[:5] # showing that 5 chunks used for context to RAG
+                'context_chunks': context_info.get('context_chunks', [])
             }
             
             logger.info(f"Generated response in {processing_time}ms using {tokens_used} tokens")
