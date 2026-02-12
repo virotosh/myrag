@@ -148,11 +148,15 @@ async def send_message(
         
         # Add RAG metadata
         sources_used = response_data.get('sources_used', [])
+        sources_notused = response_data.get('sources_notused', [])
         logger.info(f"sources_used {sources_used}")
         for source in sources_used:
             source['document_metadata'] = json.loads(source['document_metadata'])
+        for source in sources_notused:
+            source['document_metadata'] = json.loads(source['document_metadata'])
         #print(sources_used)
         ai_message.sources_used = json.dumps(sources_used) #response_data.get('sources_used', []))
+        ai_message.sources_notused = json.dumps(sources_notused)
         ai_message.context_chunks = json.dumps(response_data.get('context_chunks', []))
         ai_message.relevance_score = response_data.get('relevance_score')
         ai_message.tokens_used = response_data.get('tokens_used')

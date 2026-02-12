@@ -66,6 +66,7 @@ class MessageCreate(MessageBase):
 class MessageUpdate(BaseModel):
     """Schema for updating message metadata."""
     sources_used: Optional[str] = None
+    sources_notused: Optional[str] = None
     context_chunks: Optional[str] = None
     relevance_score: Optional[str] = None
     tokens_used: Optional[int] = None
@@ -99,6 +100,7 @@ class MessageResponse(MessageBase):
     id: int
     conversation_id: int
     sources_used: Optional[List[SourceDocument]] = None
+    sources_notused: Optional[List[SourceDocument]] = None
     context_chunks: Optional[List[str]] = None
     relevance_score: Optional[str] = None
     tokens_used: Optional[int] = None
@@ -116,6 +118,16 @@ class MessageResponse(MessageBase):
                 return None
         return v
     
+    @validator('sources_notused', pre=True)
+    def parse_sources_notused(cls, v):
+        if isinstance(v, str):
+            import json
+            try:
+                return json.loads(v)
+            except:
+                return None
+        return v
+
     @validator('context_chunks', pre=True)
     def parse_context_chunks(cls, v):
         if isinstance(v, str):
