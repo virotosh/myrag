@@ -130,7 +130,7 @@ Always maintain a helpful and professional tone."""
                 'relevance_score': relevance_score,
                 'context_info': context_info,
                 'sources_used': context_info.get('source_documents', []),
-                'context_chunks': context_info.get('context_chunks', [])
+                'context_chunks': context_info.get('context_chunks', [])[:5] # showing that 5 chunks used for context to RAG
             }
             
             logger.info(f"Generated response in {processing_time}ms using {tokens_used} tokens")
@@ -152,7 +152,7 @@ Always maintain a helpful and professional tone."""
         # Add system message with context
         system_content = self.system_prompt
         if context_info.get('context_chunks'):
-            context_text = "\n\n".join(context_info['context_chunks'][:5]) # limit 5 chunks
+            context_text = "\n\n".join(context_info['context_chunks'][:5]) # limit 5 chunks for context to RAG
             system_content += f"\n\n[CONTEXT]\n{context_text}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
