@@ -85,6 +85,8 @@ class DocumentMetadata(BaseModel):
     venue: str
     year: int
     url: str
+    shortvenue: str
+    topics: List[str]
 
 class SourceDocument(BaseModel):
     """Schema for source document references."""
