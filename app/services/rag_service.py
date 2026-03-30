@@ -121,6 +121,7 @@ class RAGService:
         conversation_id: Optional[int] = None,
         document_ids: Optional[List[int]] = None,
         db: Optional[Session] = None,
+        cached_context: Optional[Dict[str, Any]] = None,
         **llm_kwargs
     ) -> Dict[str, Any]:
         """
@@ -131,6 +132,9 @@ class RAGService:
             conversation_id: Optional conversation ID for history
             document_ids: Optional specific documents to search
             db: Database session for conversation history
+            cached_context: Pre-built context dict reconstructed from a stored
+                            message.  When provided, vector retrieval is skipped
+                            and this context is forwarded directly to the LLM.
             **llm_kwargs: Additional arguments for LLM
             
         Returns:
@@ -150,6 +154,7 @@ class RAGService:
                 conversation_history=conversation_history,
                 use_rag=True,
                 document_ids=document_ids,
+                cached_context=cached_context,
                 **llm_kwargs
             )
             #logger.info(f"AI response: {response_data}")

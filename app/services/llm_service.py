@@ -55,7 +55,8 @@ Always maintain a helpful and professional tone."""
         use_rag: bool = True,
         document_ids: Optional[List[int]] = None,
         max_tokens: Optional[int] = None,
-        temperature: Optional[float] = None
+        temperature: Optional[float] = None,
+        cached_context: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Generate AI response with optional RAG context.
@@ -67,6 +68,9 @@ Always maintain a helpful and professional tone."""
             document_ids: Specific documents to search in
             max_tokens: Override default max tokens
             temperature: Override default temperature
+            cached_context: Pre-built context dict (from a stored message).
+                            When supplied, vector retrieval is skipped entirely
+                            and this dict is used as-is for context_info.
             
         Returns:
             Dict containing response and metadata
@@ -76,7 +80,12 @@ Always maintain a helpful and professional tone."""
         try:
             # Get RAG context if enabled
             context_info = {}
-            if use_rag:
+            if cached_context is not None:
+                # Reuse context that was already retrieved and stored for a
+                # previous message – skip the vector store round-trip.
+                context_info = cached_context
+                logger.info("Using cached context from stored message – skipping vector retrieval")
+            elif use_rag:
                 context_info = await vector_store_service.get_relevant_context(
                     query=user_query,
                     max_chunks=50,
