@@ -101,8 +101,9 @@ class SourceDocument(BaseModel):
         return {'document_id':self.document_id,
                 'filename':self.filename,
                 'chunk_id':self.chunk_id,
+                'document_metadata': self.document_metadata.__dict__,
                 'relevance_score':self.relevance_score,
-                'content_snippet':self.content_snippet,}
+                'content_snippet':self.content_snippet}
 
 class MessageResponse(MessageBase):
     """Schema for message API responses."""
