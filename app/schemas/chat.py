@@ -5,6 +5,7 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 from pydantic import BaseModel, validator, ConfigDict
 from enum import Enum
+import json
 
 
 class MessageRole(str, Enum):
@@ -96,6 +97,13 @@ class SourceDocument(BaseModel):
     chunk_id: str
     relevance_score: float
     content_snippet: str
+    def __json__(self):
+        return {'document_id':document_id,
+                'filename':filename,
+                'chunk_id':chunk_id,
+                'document_metadata': document_metadata.__dict__,
+                'relevance_score':relevance_score,
+                'content_snippet':content_snippet,}
 
 class MessageResponse(MessageBase):
     """Schema for message API responses."""
