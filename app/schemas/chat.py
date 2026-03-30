@@ -98,12 +98,12 @@ class SourceDocument(BaseModel):
     relevance_score: float
     content_snippet: str
     def __json__(self):
-        return {'document_id':document_id,
-                'filename':filename,
-                'chunk_id':chunk_id,
-                'document_metadata': document_metadata.__dict__,
-                'relevance_score':relevance_score,
-                'content_snippet':content_snippet,}
+        return {'document_id':self.document_id,
+                'filename':self.filename,
+                'chunk_id':self.chunk_id,
+                'document_metadata': self.document_metadata.__dict__,
+                'relevance_score':self.relevance_score,
+                'content_snippet':self.content_snippet,}
 
 class MessageResponse(MessageBase):
     """Schema for message API responses."""
