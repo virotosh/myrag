@@ -308,7 +308,8 @@ async def get_conversation_history(
         .filter(Message.conversation_id == conversation_id)\
         .order_by(Message.created_at.asc())\
         .all()
-    logger.info(f"messages[0] : : : : {MessageResponse.from_orm(messages[0])}")
+    aaa = ChatHistoryResponse(conversation=messages[0].conversation_id,messages[MessageResponse.from_orm(messages[0])],total_messages=1)
+    logger.info(f"messages[0] : : : : {aaa}")
     
     return ChatHistoryResponse(
         conversation=ConversationResponse.from_orm(conversation),
