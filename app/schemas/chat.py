@@ -97,11 +97,10 @@ class SourceDocument(BaseModel):
     chunk_id: str
     relevance_score: float
     content_snippet: str
-    def __json__(self):
+    def to_dict(self):
         return {'document_id':self.document_id,
                 'filename':self.filename,
                 'chunk_id':self.chunk_id,
-                'document_metadata': self.document_metadata.__dict__,
                 'relevance_score':self.relevance_score,
                 'content_snippet':self.content_snippet,}
 
