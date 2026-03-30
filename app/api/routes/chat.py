@@ -125,7 +125,6 @@ async def send_message(
         # ------------------------------------------------------------------ #
         cached_context: Optional[dict] = None
         if getattr(chat_request, "message_id", None):
-            logger.info("AKJHASKJHASJKHSAKJSHAJKSHAJKHSAJKSHAJKSAH")
             ref_message = db.query(Message)\
                 .filter(Message.id == chat_request.message_id)\
                 .first()
@@ -137,6 +136,7 @@ async def send_message(
             # Reconstruct context_info dict that llm_service expects so that
             # vector retrieval is bypassed completely.
             try:
+                logger.info(f"ref_message : : : : {ref_message}")
                 stored_chunks   = json.loads(ref_message.context_chunks or "[]")
                 stored_used     = json.loads(ref_message.sources_used    or "[]")
                 stored_notused  = json.loads(ref_message.sources_notused or "[]")
@@ -159,7 +159,6 @@ async def send_message(
                 f"Reusing cached context from message {chat_request.message_id} "
                 f"({len(stored_chunks)} chunks, {len(stored_used)} sources used)"
             )
-        logger.info(f"sources_used{chat_request.message_id}")
 
         # Save user message
         user_message_data = MessageCreate(
