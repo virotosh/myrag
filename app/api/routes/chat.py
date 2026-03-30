@@ -141,7 +141,7 @@ async def send_message(
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
                 logger.info(
-                    f"Reusing cached context from message {ref_message} "
+                    f"Reusing cached context from message {ref_msg.content} "
                 )
                 stored_chunks   = ref_message.context_chunks
                 if ref_message.sources_used:
