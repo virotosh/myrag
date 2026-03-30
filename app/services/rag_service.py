@@ -141,8 +141,10 @@ class RAGService:
             Dict containing response and metadata
         """
         try:
-            logger.info(f"Generating RAG response for query: {user_query[:50]}...")
-            logger.info(f"Using cached context from stored message {cached_context}")
+            if cached_context:
+                logger.info(f"Generating RAG response for query: {cached_context.query[:50]}...")
+            else:
+                logger.info(f"Generating RAG response for query: {user_query[:50]}...")
             
             # Get conversation history if available
             conversation_history = []
