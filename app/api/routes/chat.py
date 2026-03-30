@@ -139,10 +139,10 @@ async def send_message(
                 logger.info(f"ref_message : : : : {ref_message.content}")
                 stored_chunks   = json.loads(ref_message.context_chunks or "[]")
                 stored_used     = json.loads(ref_message.sources_used    or "[]")
-                stored_notused  = json.loads(ref_message.sources_notused or "[]")
+                #stored_notused  = json.loads(ref_message.sources_notused or "[]")
             except (json.JSONDecodeError, TypeError):
                 stored_chunks, stored_used, stored_notused = [], [], []
-
+            stored_notused = []
             all_sources = stored_used + stored_notused
             scores = [s.get("relevance_score", 0.0) for s in all_sources]
             avg_score = sum(scores) / len(scores) if scores else 0.0
