@@ -141,6 +141,9 @@ async def send_message(
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
                 stored_chunks   = ref_message.context_chunks
+                logger.info(
+                    f"[s.__json__() for s in ref_message.sources_used] {[s.__json__() for s in ref_message.sources_used]} "
+                )
                 stored_used     = [s.__json__() for s in ref_message.sources_used]
                 stored_notused  = [s.__json__() for s in ref_message.sources_notused]
             except (json.JSONDecodeError, TypeError):
