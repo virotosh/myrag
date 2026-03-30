@@ -142,11 +142,11 @@ async def send_message(
             try:
                 stored_chunks   = ref_message.context_chunks
                 if ref_message.sources_used:
-                    stored_used  = [json.dumps(s.__json__()) for s in ref_message.sources_used]
+                    stored_used  = [json.dumps(s.to_dict()) for s in ref_message.sources_used]
                 else:
                     stored_used = []
                 if ref_message.sources_notused:
-                    stored_notused  = [json.dumps(s.__json__()) for s in ref_message.sources_notused]
+                    stored_notused  = [json.dumps(s.to_dict()) for s in ref_message.sources_notused]
                 else:
                     stored_notused = []
             except (json.JSONDecodeError, TypeError):
