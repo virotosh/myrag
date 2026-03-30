@@ -138,6 +138,7 @@ async def send_message(
             logger.info(f"ref_msg type : : : : {type(ref_msg)}")
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
+                logger.info(f"ref_message type : : : : {type(ref_message)}")
                 logger.info(f"ref_message : : : : {ref_message.content}")
                 stored_chunks   = json.loads(ref_message.context_chunks or "[]")
                 stored_used     = json.loads(ref_message.sources_used    or "[]")
