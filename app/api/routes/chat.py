@@ -125,16 +125,17 @@ async def send_message(
         # ------------------------------------------------------------------ #
         cached_context: Optional[dict] = None
         if getattr(chat_request, "message_id", None):
-            ref_message = db.query(MessageResponse)\
-                .filter(MessageResponse.id == chat_request.message_id)\
+            ref_msg = db.query(Message)\
+                .filter(Message.id == chat_request.message_id)\
                 .first()
-            if not ref_message:
+            if not ref_msg:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail=f"Message with id {chat_request.message_id} not found"
                 )
             # Reconstruct context_info dict that llm_service expects so that
             # vector retrieval is bypassed completely.
+            ref_message = MessageResponse.from_orm(ref_msg)
             try:
                 logger.info(f"ref_message : : : : {ref_message.sources_used}")
                 stored_chunks   = json.loads(ref_message.context_chunks or "[]")
