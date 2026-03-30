@@ -125,6 +125,7 @@ async def send_message(
         # ------------------------------------------------------------------ #
         cached_context: Optional[dict] = None
         if getattr(chat_request, "message_id", None):
+            logger.info("AKJHASKJHASJKHSAKJSHAJKSHAJKHSAJKSHAJKSAH")
             ref_message = db.query(Message)\
                 .filter(Message.id == chat_request.message_id)\
                 .first()
@@ -152,13 +153,13 @@ async def send_message(
                 "source_documents_notused": stored_notused,
                 "total_chunks":             len(stored_chunks),
                 "average_score":            avg_score,
-                "query":                    ref_message.content,
+                "query":                    ref_message.query,
             }
             logger.info(
                 f"Reusing cached context from message {chat_request.message_id} "
                 f"({len(stored_chunks)} chunks, {len(stored_used)} sources used)"
             )
-
+        logger.info(chat_request.conversation_id)
 
         # Save user message
         user_message_data = MessageCreate(
