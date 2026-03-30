@@ -153,7 +153,7 @@ async def send_message(
                 "source_documents_notused": stored_notused,
                 "total_chunks":             len(stored_chunks),
                 "average_score":            avg_score,
-                "query":                    ref_message.query,
+                "query":                    ref_message.content,
             }
             logger.info(
                 f"Reusing cached context from message {chat_request.message_id} "
