@@ -141,7 +141,7 @@ async def send_message(
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
                 logger.info(
-                    f"[s.to_dict() for s in ref_message.sources_used] {[s.to_dict() for s in ref_message.sources_used]} "
+                    f"Reusing cached context from message {[s.to_dict() for s in ref_message.sources_used]} "
                 )
                 stored_chunks   = ref_message.context_chunks
                 if ref_message.sources_used:
@@ -206,9 +206,11 @@ async def send_message(
         sources_notused = response_data.get('sources_notused', [])
         logger.info(f"sources_used {sources_used}")
         for source in sources_used:
-            source['document_metadata'] = json.loads(source['document_metadata'])
+            if isinstance(source.get('document_metadata'), str):
+                source['document_metadata'] = json.loads(source['document_metadata'])
         for source in sources_notused:
-            source['document_metadata'] = json.loads(source['document_metadata'])
+            if isinstance(source.get('document_metadata'), str):
+                source['document_metadata'] = json.loads(source['document_metadata'])
         #print(sources_used)
         ai_message.sources_used = json.dumps(sources_used) #response_data.get('sources_used', []))
         ai_message.sources_notused = json.dumps(sources_notused)
