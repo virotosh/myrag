@@ -164,7 +164,7 @@ async def send_message(
                 "query":                    ref_query.content,
             }
             logger.info(
-                f"Reusing cached context from message {chat_request.message_id} "
+                f"Reusing cached context from message {ref_query.content} "
                 f"({len(stored_chunks)} chunks, {len(stored_used)} sources used)"
             )
 
