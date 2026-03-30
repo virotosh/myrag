@@ -140,6 +140,7 @@ async def send_message(
             # vector retrieval is bypassed completely.
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
+                logger.info(f"ref_msg : : : : {ref_msg}")
                 logger.info(f"ref_message : : : : {json.loads(ref_message)}")
                 stored_chunks   = json.loads(ref_message.context_chunks or "[]")
                 stored_used     = json.loads(ref_message.sources_used    or "[]")
