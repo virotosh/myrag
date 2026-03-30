@@ -136,7 +136,7 @@ async def send_message(
             # Reconstruct context_info dict that llm_service expects so that
             # vector retrieval is bypassed completely.
             try:
-                logger.info(f"ref_message : : : : {ref_message.content}")
+                logger.info(f"ref_message : : : : {ref_message.sources_used}")
                 stored_chunks   = json.loads(ref_message.context_chunks or "[]")
                 stored_used     = json.loads(ref_message.sources_used    or "[]")
                 #stored_notused  = json.loads(ref_message.sources_notused or "[]")
