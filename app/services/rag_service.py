@@ -142,6 +142,7 @@ class RAGService:
         """
         try:
             logger.info(f"Generating RAG response for query: {user_query[:50]}...")
+            logger.info(f"Using cached context from stored message {cached_context}")
             
             # Get conversation history if available
             conversation_history = []
