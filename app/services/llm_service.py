@@ -96,7 +96,7 @@ Always maintain a helpful and professional tone."""
             # Build messages for chat completion
             #context_info['context_chunks'] = context_info['context_chunks'][:3] # limit to 3 chunks used for context to RAG
             messages = self._build_messages(
-                user_query=context_info.query, #user_query,
+                user_query=context_info['query'], #user_query,
                 context_info=context_info,
                 conversation_history=conversation_history
             )
