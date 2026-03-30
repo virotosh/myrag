@@ -141,7 +141,7 @@ async def send_message(
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
                 logger.info(
-                    f"Reusing cached context from message {[s.to_dict() for s in ref_message.sources_used]} "
+                    f"Reusing cached context from message {ref_message} "
                 )
                 stored_chunks   = ref_message.context_chunks
                 if ref_message.sources_used:
@@ -164,7 +164,7 @@ async def send_message(
                 "source_documents_notused": stored_notused,
                 "total_chunks":             len(stored_chunks),
                 "average_score":            avg_score,
-                "query":                    ref_message.content,
+                "query":                    ref_msg.content,
             }
             logger.info(
                 f"Reusing cached context from message {chat_request.message_id} "
