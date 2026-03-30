@@ -133,13 +133,14 @@ async def send_message(
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail=f"Message with id {chat_request.message_id} not found"
                 )
+            conversation = db.query(Conversation)\
+                .filter(Conversation.id == ref_msg.conversation_id)\
+                .first()
             # Reconstruct context_info dict that llm_service expects so that
             # vector retrieval is bypassed completely.
-            logger.info(f"ref_msg type : : : : {type(ref_msg)}")
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
-                logger.info(f"ref_message type : : : : {type(ref_message)}")
-                logger.info(f"ref_message : : : : {ref_message.content}")
+                logger.info(f"ref_message : : : : {ref_message}")
                 stored_chunks   = json.loads(ref_message.context_chunks or "[]")
                 stored_used     = json.loads(ref_message.sources_used    or "[]")
                 #stored_notused  = json.loads(ref_message.sources_notused or "[]")
@@ -308,8 +309,6 @@ async def get_conversation_history(
         .filter(Message.conversation_id == conversation_id)\
         .order_by(Message.created_at.asc())\
         .all()
-    aaa = ChatHistoryResponse(conversation=conversation,messages=[MessageResponse.from_orm(messages[1])],total_messages=1)
-    logger.info(f"messages[1] : : : : {aaa}")
     
     return ChatHistoryResponse(
         conversation=ConversationResponse.from_orm(conversation),
