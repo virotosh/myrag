@@ -91,6 +91,9 @@ async def send_message(
     - **message**: User message content
     - **conversation_id**: Optional existing conversation ID - still buggy, remove this in your request for now
     - **session_id**: Optional session ID for new conversations - still buggy, remove this in your request for now
+    - **message_id**: Optional ID of a previous assistant message whose RAG
+                      context (sources, chunks) should be reused verbatim,
+                      skipping a new vector-store retrieval.
     - **use_rag**: Whether to use RAG for context (default: True)
     - **max_tokens**: Maximum tokens for response
     - **temperature**: Response creativity (0.0-1.0)
@@ -117,6 +120,46 @@ async def send_message(
             db.commit()
             db.refresh(conversation)
         
+        # ------------------------------------------------------------------ #
+        # Resolve cached context from a previously stored message if requested
+        # ------------------------------------------------------------------ #
+        cached_context: Optional[dict] = None
+        if getattr(chat_request, "message_id", None):
+            ref_message = db.query(Message)\
+                .filter(Message.id == chat_request.message_id)\
+                .first()
+            if not ref_message:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Message with id {chat_request.message_id} not found"
+                )
+            # Reconstruct context_info dict that llm_service expects so that
+            # vector retrieval is bypassed completely.
+            try:
+                stored_chunks   = json.loads(ref_message.context_chunks or "[]")
+                stored_used     = json.loads(ref_message.sources_used    or "[]")
+                stored_notused  = json.loads(ref_message.sources_notused or "[]")
+            except (json.JSONDecodeError, TypeError):
+                stored_chunks, stored_used, stored_notused = [], [], []
+
+            all_sources = stored_used + stored_notused
+            scores = [s.get("relevance_score", 0.0) for s in all_sources]
+            avg_score = sum(scores) / len(scores) if scores else 0.0
+
+            cached_context = {
+                "context_chunks":           stored_chunks,
+                "source_documents":         stored_used,
+                "source_documents_notused": stored_notused,
+                "total_chunks":             len(stored_chunks),
+                "average_score":            avg_score,
+                "query":                    ref_message.content,
+            }
+            logger.info(
+                f"Reusing cached context from message {chat_request.message_id} "
+                f"({len(stored_chunks)} chunks, {len(stored_used)} sources used)"
+            )
+
+
         # Save user message
         user_message_data = MessageCreate(
             conversation_id=conversation.id,
@@ -133,6 +176,7 @@ async def send_message(
             user_query=chat_request.message,
             conversation_id=conversation.id,
             db=db,
+            cached_context=cached_context,
             max_tokens=chat_request.max_tokens,
             temperature=chat_request.temperature
         )
