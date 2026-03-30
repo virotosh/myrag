@@ -140,15 +140,9 @@ async def send_message(
             # vector retrieval is bypassed completely.
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
-                stored_chunks   = ref_message.context_chunks
-                if ref_message.sources_used:
-                    stored_used  = [s.to_dict() for s in ref_message.sources_used]
-                else:
-                    stored_used = []
-                if ref_message.sources_notused:
-                    stored_notused  = [s.to_dict() for s in ref_message.sources_notused]
-                else:
-                    stored_notused = []
+                context_chunks = ref_message.context_chunks or []
+                used_sources = [s.to_dict() for s in (ref_message.sources_used or [])]
+                unused_sources = [s.to_dict() for s in (ref_message.sources_notused or [])]
             except (json.JSONDecodeError, TypeError):
                 stored_chunks, stored_used, stored_notused = [], [], []
             all_sources = stored_used + stored_notused
@@ -164,7 +158,7 @@ async def send_message(
                 "query":                    ref_query.content,
             }
             logger.info(
-                f"Reusing cached context from message {ref_query.content} "
+                f"Reusing cached context from message {chat_request.message_id} "
                 f"({len(stored_chunks)} chunks, {len(stored_used)} sources used)"
             )
 
