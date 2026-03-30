@@ -144,22 +144,22 @@ async def send_message(
                 used_sources = [s.to_dict() for s in (ref_message.sources_used or [])]
                 unused_sources = [s.to_dict() for s in (ref_message.sources_notused or [])]
             except (json.JSONDecodeError, TypeError):
-                stored_chunks, stored_used, stored_notused = [], [], []
-            all_sources = stored_used + stored_notused
+                context_chunks, used_sources, stored_notused = [], [], []
+            all_sources = used_sources + unused_sources
             scores = [s.get("relevance_score", 0.0) for s in all_sources]
             avg_score = sum(scores) / len(scores) if scores else 0.0
 
             cached_context = {
-                "context_chunks":           stored_chunks,
-                "source_documents":         stored_used,
-                "source_documents_notused": stored_notused,
-                "total_chunks":             len(stored_chunks),
+                "context_chunks":           context_chunks,
+                "source_documents":         used_sources,
+                "source_documents_notused": unused_sources,
+                "total_chunks":             len(context_chunks),
                 "average_score":            avg_score,
                 "query":                    ref_query.content,
             }
             logger.info(
                 f"Reusing cached context from message {chat_request.message_id} "
-                f"({len(stored_chunks)} chunks, {len(stored_used)} sources used)"
+                f"({len(context_chunks)} chunks, {len(used_sources)} sources used)"
             )
 
         # Save user message
