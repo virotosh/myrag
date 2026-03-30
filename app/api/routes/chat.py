@@ -159,7 +159,7 @@ async def send_message(
                 f"Reusing cached context from message {chat_request.message_id} "
                 f"({len(stored_chunks)} chunks, {len(stored_used)} sources used)"
             )
-        logger.info(chat_request.conversation_id)
+        logger.info(f"sources_used{chat_request.message_id}")
 
         # Save user message
         user_message_data = MessageCreate(
