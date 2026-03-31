@@ -232,12 +232,14 @@ Always maintain a helpful and professional tone."""
         rag_content: str,
     ) -> List:
         messages = []
-        sources = [json.loads(source['document_metadata'])['title'] for source in context_info['source_documents']]
-        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents']] + \
-                    [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents']]
-        venues = [json.loads(source['document_metadata'])['shortvenue'] for source in context_info['source_documents']]
-        topics = [json.loads(source['document_metadata'])['topics'][:10] for source in context_info['source_documents']]
-        years = [json.loads(source['document_metadata'])['year'] for source in context_info['source_documents']]
+        if isinstance(source.get('document_metadata'), str):
+            source['document_metadata'] = json.loads(source['document_metadata'])
+        sources = [source['document_metadata']['title'] for source in context_info['source_documents']]
+        authors = [source['document_metadata']['s2orcauthors'] for source in context_info['source_documents']] + \
+                    [source['document_metadata']['crossrefauthors'] for source in context_info['source_documents']]
+        venues = [source['document_metadata']['shortvenue'] for source in context_info['source_documents']]
+        topics = [source['document_metadata']['topics'][:10] for source in context_info['source_documents']]
+        years = [source['document_metadata']['year'] for source in context_info['source_documents']]
         summary_prompt = f"""
             Summary template:
             "This response draws on sources spanning from <years>. 
@@ -269,12 +271,14 @@ Always maintain a helpful and professional tone."""
         rag_content: str,
     ) -> List:
         messages = []
-        sources = [json.loads(source['document_metadata'])['title'] for source in context_info['source_documents_notused'][:5]]
-        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents_notused'][:5]] + \
-                    [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents_notused'][:5]]
-        venues = [json.loads(source['document_metadata'])['shortvenue'] for source in context_info['source_documents_notused'][:5]]
-        topics = [json.loads(source['document_metadata'])['topics'][:10] for source in context_info['source_documents_notused'][:5]]
-        years = [json.loads(source['document_metadata'])['year'] for source in context_info['source_documents_notused'][:5]]
+        if isinstance(source.get('document_metadata'), str):
+            source['document_metadata'] = json.loads(source['document_metadata'])
+        sources = [source['document_metadata']['title'] for source in context_info['source_documents_notused'][:5]]
+        authors = [source['document_metadata']['s2orcauthors'] for source in context_info['source_documents_notused'][:5]] + \
+                    [source['document_metadata']['crossrefauthors'] for source in context_info['source_documents_notused'][:5]]
+        venues = [source['document_metadata']['shortvenue'] for source in context_info['source_documents_notused'][:5]]
+        topics = [source['document_metadata']['topics'][:10] for source in context_info['source_documents_notused'][:5]]
+        years = [source['document_metadata']['year'] for source in context_info['source_documents_notused'][:5]]
         summary_prompt = f"""
             Summary template:
             "Several sources were excluded from the response spanning from <years>. 
