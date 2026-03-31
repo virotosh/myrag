@@ -258,8 +258,8 @@ Summary:"""
 
     ##### FILTERING LOGIC for FEEDBACK ##### 
     def normalize_name(name: str) -> str:
-    """Lowercase and strip a name for fuzzy comparison."""
-    return name.strip().lower()
+        """Lowercase and strip a name for fuzzy comparison."""
+        return name.strip().lower()
  
  
     def author_match(doc_metadata: dict, filter_authors: list[str]) -> bool:
