@@ -211,10 +211,15 @@ Always maintain a helpful and professional tone."""
         rag_content: str,
     ) -> List:
         messages = []
+        sources = [source['title'] for source in context_info['source_documents']]
+        authors = [source['s2orcauthors'] for source in context_info['source_documents']] + [source['s2orcauthors'] for source in context_info['crossrefauthors']]
+        venues = [source['shortvenue'] for source in context_info['source_documents']]
+        topics = [source['topic'] for source in context_info['source_documents']]
+        years = [source['year'] for source in context_info['source_documents']]
         summary_prompt = f"""
             Summary template:
-            "This response draws on <document_sources> spanning from <years>. 
-            These papers focus on a specific <theme>, published in <shortvenue> (use shortvenue key in the Sources). 
+            "This response draws on sources spanning from <years>. 
+            These papers focus on a specific <theme>, published in <shortvenue> (use shortvenues in below Sources). 
             Those <a list of all authors across document_sources> contribute <works>"
 
             Write a brief summary (150 words max, use summary template above) responds to the query "{user_query}"
@@ -225,8 +230,11 @@ Always maintain a helpful and professional tone."""
             {rag_content}
 
             Sources:
-            {context_info['source_documents']}
-
+            {sources}
+            authors: {authors}
+            venues: {venues}
+            topics: {topics}
+            years: {years}
         """
         logger.info(f"summary_prompt  {summary_prompt}")
         messages.append(HumanMessage(content=summary_prompt))
