@@ -126,8 +126,8 @@ Always maintain a helpful and professional tone."""
                 
                 tokens_used = cb.total_tokens
                 cost = cb.total_cost
-            # summary
-            summary_messages = self._build_messages_for_summary(
+            # summary included
+            summary_messages = self._build_messages_for_summary_included(
                 user_query=user_query,
                 context_info=context_info,
                 rag_content=response.content
@@ -140,9 +140,26 @@ Always maintain a helpful and professional tone."""
                         model_name=settings.llm_model,
                         **model_kwargs
                     )
-                    summary = temp_model.invoke(summary_messages)
+                    summary_included = temp_model.invoke(summary_messages)
                 else:
-                    summary = self.chat_model.invoke(summary_messages)
+                    summary_included = self.chat_model.invoke(summary_messages)
+            # summary excluded
+            summary_messages = self._build_messages_for_summary_excluded(
+                user_query=user_query,
+                context_info=context_info,
+                rag_content=response.content
+            )
+            with get_openai_callback() as cb:
+                if model_kwargs:
+                    # Create temporary model with custom parameters
+                    temp_model = ChatOpenAI(
+                        api_key=settings.openai_api_key,
+                        model_name=settings.llm_model,
+                        **model_kwargs
+                    )
+                    summary_excluded = temp_model.invoke(summary_messages)
+                else:
+                    summary_excluded = self.chat_model.invoke(summary_messages)
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
             
@@ -164,7 +181,8 @@ Always maintain a helpful and professional tone."""
                 'sources_notused': context_info.get('source_documents_notused', []),
                 'context_chunks': context_info.get('context_chunks', []),
                 'context_chunks_notused': context_info.get('context_chunks_notused', []),
-                'summary_included': summary.content
+                'summary_included': summary_included.content
+                'summary_excluded': summary_excluded.content
             }
             
             logger.info(f"Generated response in {processing_time}ms using {tokens_used} tokens")
@@ -204,7 +222,7 @@ Always maintain a helpful and professional tone."""
         
         return messages
 
-    def _build_messages_for_summary(
+    def _build_messages_for_summary_included(
         self,
         user_query: str,
         context_info: Dict[str, Any],
@@ -212,7 +230,8 @@ Always maintain a helpful and professional tone."""
     ) -> List:
         messages = []
         sources = [json.loads(source['document_metadata'])['title'] for source in context_info['source_documents']]
-        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents']] + [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents']]
+        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents']] + \
+                    [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents']]
         venues = [json.loads(source['document_metadata'])['shortvenue'] for source in context_info['source_documents']]
         topics = [json.loads(source['document_metadata'])['topics'][:10] for source in context_info['source_documents']]
         years = [json.loads(source['document_metadata'])['year'] for source in context_info['source_documents']]
@@ -223,7 +242,7 @@ Always maintain a helpful and professional tone."""
             Those <a list of all authors across document_sources> contribute <works>"
 
             Write a brief summary (150 words max, use summary template above) responds to the query "{user_query}"
-            is based on the following souces, including inline 1-5 authors, important years, important venues (use acronyms), 
+            is based on the following sources, including inline 1-5 authors, important years, important venues (use acronyms), 
             and use 5 most important keywords exists in "topics" key across all the sources to describe the <theme> in the summary:
 
             This is the response:
@@ -240,6 +259,42 @@ Always maintain a helpful and professional tone."""
         messages.append(HumanMessage(content=summary_prompt))
         return messages
 
+    def _build_messages_for_summary_excluded(
+        self,
+        user_query: str,
+        context_info: Dict[str, Any],
+        rag_content: str,
+    ) -> List:
+        messages = []
+        sources = [json.loads(source['document_metadata'])['title'] for source in context_info['source_documents_notused']]
+        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents_notused']] + \
+                    [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents_notused']]
+        venues = [json.loads(source['document_metadata'])['shortvenue'] for source in context_info['source_documents_notused']]
+        topics = [json.loads(source['document_metadata'])['topics'][:10] for source in context_info['source_documents_notused']]
+        years = [json.loads(source['document_metadata'])['year'] for source in context_info['source_documents_notused']]
+        summary_prompt = f"""
+            Summary template:
+            "Several sources were excluded from the response spanning from <years>. 
+            These papers focus on a specific <theme>, published in <shortvenue> (use shortvenues in below Sources). 
+            Those <a list of all authors across document_sources> contribute <works>"
+
+            Write a brief summary (150 words max, use summary template above) describe what sources were excluded in the response for
+            the query "{user_query}", including inline 1-5 authors, important years, important venues (use acronyms), 
+            and use 5 most important keywords exists in "topics" key across all the excluded sources to describe the <theme> in the summary:
+
+            This is the response:
+            {rag_content}
+
+            Sources that were excluded from the above response:
+            {sources}
+            authors: {authors}
+            venues: {venues}
+            topics: {topics}
+            years: {years}
+        """
+        logger.info(f"summary_prompt  {summary_prompt}")
+        messages.append(HumanMessage(content=summary_prompt))
+        return messages
     
     def _calculate_relevance_score(self, average_score: float, chunk_count: int) -> str:
         """Calculate relevance score category based on context quality."""

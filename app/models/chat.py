@@ -51,6 +51,7 @@ class Message(Base):
     context_chunks = Column(Text, nullable=True)  # JSON string of retrieved chunks
     #context_chunks_notused = Column(Text, nullable=True)  # JSON string of retrieved chunks
     #summary_included = Column(Text, nullable=False)
+    #summary_excluded = Column(Text, nullable=False)
     relevance_score = Column(String(10), nullable=True)  # High, Medium, Low
     
     # Processing metadata

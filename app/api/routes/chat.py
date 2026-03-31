@@ -148,8 +148,9 @@ async def send_message(
                 used_sources = [s.to_dict() for s in (ref_message.sources_used or [])]
                 unused_sources = [s.to_dict() for s in (ref_message.sources_notused or [])]
                 summary_included = ref_message.summary_included or []
+                summary_excluded = ref_message.summary_excluded or []
             except (json.JSONDecodeError, TypeError):
-                context_chunks, context_chunks_notused, used_sources, unused_sources, summary_included = [], [], [], [], []
+                context_chunks, context_chunks_notused, used_sources, unused_sources, summary_included, summary_excluded = [], [], [], [], [], []
             all_sources = used_sources + unused_sources
             scores = [s.get("relevance_score", 0.0) for s in all_sources]
             avg_score = sum(scores) / len(scores) if scores else 0.0
@@ -160,6 +161,7 @@ async def send_message(
                 "source_documents":         used_sources,
                 "source_documents_notused": unused_sources,
                 "summary_included":         summary_included,
+                "summary_excluded":         summary_excluded,
                 "total_chunks":             len(context_chunks+context_chunks_notused),
                 "average_score":            avg_score,
                 "query":                    ref_query.content,
@@ -216,6 +218,7 @@ async def send_message(
         ai_message.context_chunks = json.dumps(response_data.get('context_chunks', []))
         ai_message.context_chunks_notused = json.dumps(response_data.get('context_chunks_notused', []))
         ai_message.summary_included = response_data.get('summary_included', [])
+        ai_message.summary_excluded = response_data.get('summary_excluded', [])
         ai_message.relevance_score = response_data.get('relevance_score')
         ai_message.tokens_used = response_data.get('tokens_used')
         ai_message.processing_time = response_data.get('processing_time')
