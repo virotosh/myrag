@@ -125,6 +125,9 @@ async def send_message(
         # ------------------------------------------------------------------ #
         cached_context: Optional[dict] = None
         if getattr(chat_request, "message_id", None) and getattr(chat_request, "filters", None):
+            logger.info(
+                f"------- filters {chat_request.filters} "
+            )
             ref_msg = db.query(Message)\
                 .filter(Message.id == chat_request.message_id)\
                 .first()
