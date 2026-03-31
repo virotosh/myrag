@@ -258,12 +258,12 @@ Summary:"""
 
 
     ##### FILTERING LOGIC for FEEDBACK ##### 
-    def normalize_name(name: str) -> str:
+    def normalize_name(self, name: str) -> str:
         """Lowercase and strip a name for fuzzy comparison."""
         return name.strip().lower()
  
  
-    def author_match(doc_metadata: dict, filter_authors: list[str]) -> bool:
+    def author_match(self, doc_metadata: dict, filter_authors: list[str]) -> bool:
         """Return True if ALL filter_authors appear in either s2orcauthors or crossrefauthors."""
         s2_authors = {self.normalize_name(a) for a in doc_metadata.get("s2orcauthors", [])}
         cr_authors = {self.normalize_name(a) for a in doc_metadata.get("crossrefauthors", [])}
@@ -272,7 +272,7 @@ Summary:"""
         return all(self.normalize_name(fa) in combined_authors for fa in filter_authors)
      
      
-    def topic_match(content_snippet: str, filter_topics: list[str]) -> bool:
+    def topic_match(self, content_snippet: str, filter_topics: list[str]) -> bool:
         """Return True if ALL filter_topics appear (case-insensitive) in content_snippet."""
         snippet_lower = content_snippet.lower()
         return all(topic.lower() in snippet_lower for topic in filter_topics)
@@ -284,6 +284,7 @@ Summary:"""
      
      
     def filter_documents(
+        self,
         documents: list[dict[str, Any]],
         filters: dict[str, dict],
     ) -> dict[str, list[dict]]:
