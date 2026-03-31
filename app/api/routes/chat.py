@@ -144,26 +144,28 @@ async def send_message(
             ref_message = MessageResponse.from_orm(ref_msg)
             try:
                 context_chunks = ref_message.context_chunks or []
+                context_chunks_notused = ref_message.context_chunks_notused or []
                 used_sources = [s.to_dict() for s in (ref_message.sources_used or [])]
                 unused_sources = [s.to_dict() for s in (ref_message.sources_notused or [])]
             except (json.JSONDecodeError, TypeError):
-                context_chunks, used_sources, stored_notused = [], [], []
+                context_chunks, context_chunks_notused, used_sources, unused_sources = [], [], [], []
             all_sources = used_sources + unused_sources
             scores = [s.get("relevance_score", 0.0) for s in all_sources]
             avg_score = sum(scores) / len(scores) if scores else 0.0
 
             cached_context = {
                 "context_chunks":           context_chunks,
+                "context_chunks_notused":   context_chunks_notused,
                 "source_documents":         used_sources,
                 "source_documents_notused": unused_sources,
-                "total_chunks":             len(context_chunks),
+                "total_chunks":             len(context_chunks+context_chunks_notused),
                 "average_score":            avg_score,
                 "query":                    ref_query.content,
                 "filters":                  chat_request.filters
             }
             logger.info(
                 f"Reusing cached context from message {chat_request.message_id} "
-                f"({len(context_chunks)} chunks, {len(used_sources)} sources used)"
+                f"({len(context_chunks+context_chunks_notused)} chunks, {len(used_sources)} sources used)"
             )
 
         # Save user message
@@ -210,6 +212,7 @@ async def send_message(
         ai_message.sources_used = json.dumps(sources_used) #response_data.get('sources_used', []))
         ai_message.sources_notused = json.dumps(sources_notused)
         ai_message.context_chunks = json.dumps(response_data.get('context_chunks', []))
+        ai_message.context_chunks_notused = json.dumps(response_data.get('context_chunks_notused', []))
         ai_message.relevance_score = response_data.get('relevance_score')
         ai_message.tokens_used = response_data.get('tokens_used')
         ai_message.processing_time = response_data.get('processing_time')
@@ -506,6 +509,7 @@ async def websocket_endpoint(
                         # Add RAG metadata
                         ai_message.sources_used = json.dumps(response_data.get('sources_used', []))
                         ai_message.context_chunks = json.dumps(response_data.get('context_chunks', []))
+                        ai_message.context_chunks_notused = json.dumps(response_data.get('context_chunks_notused', []))
                         ai_message.relevance_score = response_data.get('relevance_score')
                         ai_message.tokens_used = response_data.get('tokens_used')
                         ai_message.processing_time = response_data.get('processing_time')

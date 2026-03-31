@@ -166,6 +166,7 @@ class VectorStoreService:
             if not search_results:
                 return {
                     "context_chunks": [],
+                    "context_chunks_notused": [],
                     "source_documents": [],
                     "source_documents_notused": [],
                     "total_chunks": 0,
@@ -199,9 +200,10 @@ class VectorStoreService:
             
             result = {
                 "context_chunks": context_chunks[:chunks_used],
+                "context_chunks_notused": context_chunks[chunks_used:],
                 "source_documents": source_documents[:chunks_used],
                 "source_documents_notused": source_documents[chunks_used:],
-                "total_chunks": len(context_chunks[:chunks_used]),
+                "total_chunks": len(context_chunks),
                 "average_score": average_score,
                 "query": query
             }

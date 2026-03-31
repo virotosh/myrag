@@ -69,6 +69,7 @@ class MessageUpdate(BaseModel):
     sources_used: Optional[str] = None
     sources_notused: Optional[str] = None
     context_chunks: Optional[str] = None
+    context_chunks_notused: Optional[str] = None
     relevance_score: Optional[str] = None
     tokens_used: Optional[int] = None
     processing_time: Optional[str] = None
@@ -112,6 +113,7 @@ class MessageResponse(MessageBase):
     sources_used: Optional[List[SourceDocument]] = None
     sources_notused: Optional[List[SourceDocument]] = None
     context_chunks: Optional[List[str]] = None
+    context_chunks_notused: Optional[List[str]] = None
     relevance_score: Optional[str] = None
     tokens_used: Optional[int] = None
     processing_time: Optional[str] = None
@@ -140,6 +142,16 @@ class MessageResponse(MessageBase):
 
     @validator('context_chunks', pre=True)
     def parse_context_chunks(cls, v):
+        if isinstance(v, str):
+            import json
+            try:
+                return json.loads(v)
+            except:
+                return None
+        return v
+
+    @validator('context_chunks_notused', pre=True)
+    def parse_context_chunks_notused(cls, v):
         if isinstance(v, str):
             import json
             try:
