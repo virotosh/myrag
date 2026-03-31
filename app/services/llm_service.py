@@ -181,7 +181,7 @@ Always maintain a helpful and professional tone."""
                 'sources_notused': context_info.get('source_documents_notused', []),
                 'context_chunks': context_info.get('context_chunks', []),
                 'context_chunks_notused': context_info.get('context_chunks_notused', []),
-                'summary_included': summary_included.content
+                'summary_included': summary_included.content,
                 'summary_excluded': summary_excluded.content
             }
             
