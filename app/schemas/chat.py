@@ -165,7 +165,7 @@ class MessageResponse(MessageBase):
         return v
 
     @validator('summary_included', pre=True)
-    def parse_context_chunks_notused(cls, v):
+    def parse_summary_included(cls, v):
         if isinstance(v, str):
             import json
             try:
@@ -175,7 +175,7 @@ class MessageResponse(MessageBase):
         return v
 
     @validator('summary_excluded', pre=True)
-    def parse_context_chunks_notused(cls, v):
+    def parse_summary_excluded(cls, v):
         if isinstance(v, str):
             import json
             try:
