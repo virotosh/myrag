@@ -341,13 +341,16 @@ Summary:"""
                 exc_years = excluded_criteria.get("years", [])
      
                 authors_ok = self.author_match(meta, exc_authors) if exc_authors else True
+                authors_ok = authors_ok if len(exc_authors)>0 else False
                 topics_ok = self.topic_match(snippet, exc_topics) if exc_topics else True
+                topics_ok = topics_ok if len(exc_topics)>0 else False
                 years_ok = self.year_in_range(year, exc_years) if (exc_years and year is not None) else True
+                years_ok = years_ok if len(exc_years)>0 else False
      
                 # Keep only documents that match ALL criteria (filter out non-matching ones)
                 logger.info(authors_ok)
                 logger.info(topics_ok)
-                logger.info(self.year_in_range(year, exc_years))
+                logger.info(years_ok)
                 if not authors_ok and not topics_ok and not years_ok:
                     excluded_results.append(doc)
         matched = [ doc for doc in documents if doc in included_results and doc in excluded_results ]
