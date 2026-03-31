@@ -212,7 +212,7 @@ Always maintain a helpful and professional tone."""
     ) -> List:
         messages = []
         sources = [json.loads(source['document_metadata'])['title'] for source in context_info['source_documents']]
-        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents']] + [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['crossrefauthors']]
+        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents']] + [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents']]
         venues = [json.loads(source['document_metadata'])['shortvenue'] for source in context_info['source_documents']]
         topics = [json.loads(source['document_metadata'])['topics'][:10] for source in context_info['source_documents']]
         years = [json.loads(source['document_metadata'])['year'] for source in context_info['source_documents']]
