@@ -142,6 +142,9 @@ async def send_message(
             # Reconstruct context_info dict that llm_service expects so that
             # vector retrieval is bypassed completely.
             ref_message = MessageResponse.from_orm(ref_msg)
+            conversation = db.query(Conversation)\
+                .filter(Conversation.id == ref_message.conversation_id)\
+                .first()
             try:
                 context_chunks = ref_message.context_chunks or []
                 context_chunks_notused = ref_message.context_chunks_notused or []
