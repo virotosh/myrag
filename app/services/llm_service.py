@@ -409,8 +409,8 @@ Summary:"""
     def filter_documents(
         self,
         documents: list[dict[str, Any]],
-        context_chunks: list[str],
         filters: dict[str, dict],
+        context_chunks: list[str],
     ) -> dict[str, list[dict]]:
         """
         Filter documents based on included/excluded criteria.
