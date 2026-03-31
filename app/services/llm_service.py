@@ -255,7 +255,7 @@ Always maintain a helpful and professional tone."""
             topics: {topics}
             years: {years}
         """
-        logger.info(f"summary_prompt  {summary_prompt}")
+        #logger.info(f"summary_prompt  {summary_prompt}")
         messages.append(HumanMessage(content=summary_prompt))
         return messages
 
@@ -292,7 +292,7 @@ Always maintain a helpful and professional tone."""
             topics: {topics}
             years: {years}
         """
-        logger.info(f"summary_prompt  {summary_prompt}")
+        #logger.info(f"summary_prompt  {summary_prompt}")
         messages.append(HumanMessage(content=summary_prompt))
         return messages
     
