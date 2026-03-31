@@ -266,12 +266,12 @@ Always maintain a helpful and professional tone."""
         rag_content: str,
     ) -> List:
         messages = []
-        sources = [json.loads(source['document_metadata'])['title'] for source in context_info['source_documents_notused']]
-        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents_notused']] + \
-                    [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents_notused']]
-        venues = [json.loads(source['document_metadata'])['shortvenue'] for source in context_info['source_documents_notused']]
-        topics = [json.loads(source['document_metadata'])['topics'][:10] for source in context_info['source_documents_notused']]
-        years = [json.loads(source['document_metadata'])['year'] for source in context_info['source_documents_notused']]
+        sources = [json.loads(source['document_metadata'])['title'] for source in context_info['source_documents_notused'][:5]]
+        authors = [json.loads(source['document_metadata'])['s2orcauthors'] for source in context_info['source_documents_notused'][:5]] + \
+                    [json.loads(source['document_metadata'])['crossrefauthors'] for source in context_info['source_documents_notused'][:5]]
+        venues = [json.loads(source['document_metadata'])['shortvenue'] for source in context_info['source_documents_notused'][:5]]
+        topics = [json.loads(source['document_metadata'])['topics'][:10] for source in context_info['source_documents_notused'][:5]]
+        years = [json.loads(source['document_metadata'])['year'] for source in context_info['source_documents_notused'][:5]]
         summary_prompt = f"""
             Summary template:
             "Several sources were excluded from the response spanning from <years>. 
