@@ -167,8 +167,10 @@ class VectorStoreService:
                 return {
                     "context_chunks": [],
                     "source_documents": [],
+                    "source_documents_notused": [],
                     "total_chunks": 0,
-                    "average_score": 0.0
+                    "average_score": 0.0,
+                    "query": query
                 }
             
             # Extract context chunks and source information
@@ -188,7 +190,7 @@ class VectorStoreService:
                     "chunk_id": doc.metadata.get("chunk_id"),
                     "chunk_index": doc.metadata.get("chunk_index"),
                     "relevance_score": score,
-                    "content_snippet": doc.page_content[:200] + "..." if len(doc.page_content) > 200 else doc.page_content
+                    "content_snippet": doc.page_content#[:200] + "..." if len(doc.page_content) > 200 else doc.page_content
                 }
                 source_documents.append(source_info)
             

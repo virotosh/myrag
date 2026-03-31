@@ -84,7 +84,10 @@ Always maintain a helpful and professional tone."""
                 # Reuse context that was already retrieved and stored for a
                 # previous message – skip the vector store round-trip.
                 context_info = cached_context
-                logger.info("Using cached context from stored message – skipping vector retrieval")
+                rerank = filter_documents(context_info['sources_used']+context_info['source_documents_notused'], context_info['filters'])
+                context_info['source_documents'] = rerank[:5]
+                context_info['source_documents_notused'] = rerank[5:]
+                logger.info("FEEDBACK - Using cached context from stored message – skipping vector retrieval")
             elif use_rag:
                 context_info = await vector_store_service.get_relevant_context(
                     query=user_query,
@@ -96,7 +99,7 @@ Always maintain a helpful and professional tone."""
             # Build messages for chat completion
             #context_info['context_chunks'] = context_info['context_chunks'][:3] # limit to 3 chunks used for context to RAG
             messages = self._build_messages(
-                user_query=context_info['query'], #user_query,
+                user_query=user_query,
                 context_info=context_info,
                 conversation_history=conversation_history
             )
@@ -251,6 +254,100 @@ Summary:"""
             logger.error(f"LLM service health check failed: {str(e)}")
             return False
 
+
+
+    ##### FILTERING LOGIC for FEEDBACK ##### 
+    def normalize_name(name: str) -> str:
+    """Lowercase and strip a name for fuzzy comparison."""
+    return name.strip().lower()
+ 
+ 
+    def author_match(doc_metadata: dict, filter_authors: list[str]) -> bool:
+        """Return True if ALL filter_authors appear in either s2orcauthors or crossrefauthors."""
+        s2_authors = {normalize_name(a) for a in doc_metadata.get("s2orcauthors", [])}
+        cr_authors = {normalize_name(a) for a in doc_metadata.get("crossrefauthors", [])}
+        combined_authors = s2_authors | cr_authors
+     
+        return all(normalize_name(fa) in combined_authors for fa in filter_authors)
+     
+     
+    def topic_match(content_snippet: str, filter_topics: list[str]) -> bool:
+        """Return True if ALL filter_topics appear (case-insensitive) in content_snippet."""
+        snippet_lower = content_snippet.lower()
+        return all(topic.lower() in snippet_lower for topic in filter_topics)
+     
+     
+    def year_in_range(year: int, year_range: list[int]) -> bool:
+        """Return True if year is within [year_range[0], year_range[1]]."""
+        return year_range[0] <= year <= year_range[1]
+     
+     
+    def filter_documents(
+        documents: list[dict[str, Any]],
+        filters: dict[str, dict],
+    ) -> dict[str, list[dict]]:
+        """
+        Filter documents based on included/excluded criteria.
+     
+        Included: return documents matching ALL of authors, topics, and year range.
+        Excluded: filter OUT documents that do NOT match ALL of authors, topics,
+                  and year range (i.e. keep only those that fully satisfy all criteria).
+     
+        Parameters
+        ----------
+        documents : list of document dicts
+        filters   : {
+                        'included': {'authors': [...], 'topics': [...], 'years': [start, end]},
+                        'excluded': {'authors': [...], 'topics': [...], 'years': [start, end]}
+                    }
+     
+        Returns
+        -------
+        {'included': [...], 'excluded': [...]}
+        """
+        included_criteria = filters.get("included", {})
+        excluded_criteria = filters.get("excluded", {})
+     
+        included_results = []
+        excluded_results = []
+     
+        for doc in documents:
+            meta = doc.get("document_metadata", {})
+            snippet = doc.get("content_snippet", "")
+            year = meta.get("year")
+     
+            # ── INCLUDED logic ──────────────────────────────────────────────────
+            # Keep document only if it satisfies ALL three criteria.
+            if included_criteria:
+                inc_authors = included_criteria.get("authors", [])
+                inc_topics = included_criteria.get("topics", [])
+                inc_years = included_criteria.get("years", [])
+     
+                authors_ok = author_match(meta, inc_authors) if inc_authors else True
+                topics_ok = topic_match(snippet, inc_topics) if inc_topics else True
+                years_ok = year_in_range(year, inc_years) if (inc_years and year is not None) else True
+     
+                if authors_ok and topics_ok and years_ok:
+                    included_results.append(doc)
+     
+            # ── EXCLUDED logic ───────────────────────────────────────────────────
+            # Remove documents that fail ANY of the three criteria
+            # (i.e. keep only those that satisfy ALL criteria).
+            if excluded_criteria:
+                exc_authors = excluded_criteria.get("authors", [])
+                exc_topics = excluded_criteria.get("topics", [])
+                exc_years = excluded_criteria.get("years", [])
+     
+                authors_ok = author_match(meta, exc_authors) if exc_authors else True
+                topics_ok = topic_match(snippet, exc_topics) if exc_topics else True
+                years_ok = year_in_range(year, exc_years) if (exc_years and year is not None) else True
+     
+                # Keep only documents that match ALL criteria (filter out non-matching ones)
+                if authors_ok and topics_ok and years_ok:
+                    excluded_results.append(doc)
+        matched = [ doc for doc in documents if doc in included_results and doc in excluded_results ]
+        remaining = [ doc for doc in documents if doc not in matched ]
+        return matched + remaining
 
 # Global instance
 llm_service = LLMService()

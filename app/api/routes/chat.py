@@ -124,7 +124,7 @@ async def send_message(
         # Resolve cached context from a previously stored message if requested
         # ------------------------------------------------------------------ #
         cached_context: Optional[dict] = None
-        if getattr(chat_request, "message_id", None):
+        if getattr(chat_request, "message_id", None) and getattr(chat_request, "filters", None):
             ref_msg = db.query(Message)\
                 .filter(Message.id == chat_request.message_id)\
                 .first()
@@ -156,6 +156,7 @@ async def send_message(
                 "total_chunks":             len(context_chunks),
                 "average_score":            avg_score,
                 "query":                    ref_query.content,
+                "filters":                  chat_request.filters
             }
             logger.info(
                 f"Reusing cached context from message {chat_request.message_id} "
@@ -195,14 +196,14 @@ async def send_message(
         # Add RAG metadata
         sources_used = response_data.get('sources_used', [])
         sources_notused = response_data.get('sources_notused', [])
-        logger.info(f"sources_used {sources_used}")
+        logger.info(f"---- sources_used {sources_used}")
         for source in sources_used:
             if isinstance(source.get('document_metadata'), str):
                 source['document_metadata'] = json.loads(source['document_metadata'])
         for source in sources_notused:
             if isinstance(source.get('document_metadata'), str):
                 source['document_metadata'] = json.loads(source['document_metadata'])
-        #print(sources_used)
+
         ai_message.sources_used = json.dumps(sources_used) #response_data.get('sources_used', []))
         ai_message.sources_notused = json.dumps(sources_notused)
         ai_message.context_chunks = json.dumps(response_data.get('context_chunks', []))

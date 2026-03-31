@@ -142,7 +142,8 @@ class RAGService:
         """
         try:
             if cached_context:
-                logger.info(f"Generating RAG response for query: {cached_context['query'][:50]}...")
+                logger.info(f"Generating RAG response based cached context for query: {cached_context['query'][:50]}...")
+                user_query = cached_context['query']
             else:
                 logger.info(f"Generating RAG response for query: {user_query[:50]}...")
             
