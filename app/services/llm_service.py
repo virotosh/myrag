@@ -278,7 +278,7 @@ Summary:"""
         return all(topic.lower() in snippet_lower for topic in filter_topics)
      
      
-    def year_in_range(year: int, year_range: list[int]) -> bool:
+    def year_in_range(self, year: int, year_range: list[int]) -> bool:
         """Return True if year is within [year_range[0], year_range[1]]."""
         return year_range[0] <= year <= year_range[1]
      
