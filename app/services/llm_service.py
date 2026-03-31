@@ -224,7 +224,11 @@ Always maintain a helpful and professional tone."""
             This is the response:
             {rag_content}
 
+            Sources:
+            {context_info['source_documents']}
+
         """
+        logger.info(f"summary_prompt  {summary_prompt}")
         messages.append(HumanMessage(content=summary_prompt))
         return messages
 
