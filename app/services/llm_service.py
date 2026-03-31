@@ -211,11 +211,12 @@ Always maintain a helpful and professional tone."""
         rag_content: str,
     ) -> List:
         messages = []
-        sources = [source['title'] for source in context_info['source_documents']]
-        authors = [source['s2orcauthors'] for source in context_info['source_documents']] + [source['s2orcauthors'] for source in context_info['crossrefauthors']]
-        venues = [source['shortvenue'] for source in context_info['source_documents']]
-        topics = [source['topics'][:10] for source in context_info['source_documents']]
-        years = [source['year'] for source in context_info['source_documents']]
+        sources = [source['title'] for source in context_info['source_documents']['document_metadata']]
+        authors = [source['s2orcauthors'] for source in context_info['source_documents']['document_metadata']] + \
+                    [source['s2orcauthors'] for source in context_info['crossrefauthors']['document_metadata']]
+        venues = [source['shortvenue'] for source in context_info['source_documents']['document_metadata']]
+        topics = [source['topics'][:10] for source in context_info['source_documents']['document_metadata']]
+        years = [source['year'] for source in context_info['source_documents']['document_metadata']]
         summary_prompt = f"""
             Summary template:
             "This response draws on sources spanning from <years>. 
