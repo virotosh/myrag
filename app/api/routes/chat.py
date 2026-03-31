@@ -205,7 +205,7 @@ async def send_message(
         # Add RAG metadata
         sources_used = response_data.get('sources_used', [])
         sources_notused = response_data.get('sources_notused', [])
-        logger.info(f"---- sources_used {sources_used}")
+        logger.info(f"---- sources_notused {sources_notused}")
         for source in sources_used:
             if isinstance(source.get('document_metadata'), str):
                 source['document_metadata'] = json.loads(source['document_metadata'])

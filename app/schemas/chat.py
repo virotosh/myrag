@@ -163,26 +163,6 @@ class MessageResponse(MessageBase):
             except:
                 return None
         return v
-
-    @validator('summary_included', pre=True)
-    def parse_summary_included(cls, v):
-        if isinstance(v, str):
-            import json
-            try:
-                return json.loads(v)
-            except:
-                return None
-        return v
-
-    @validator('summary_excluded', pre=True)
-    def parse_summary_excluded(cls, v):
-        if isinstance(v, str):
-            import json
-            try:
-                return json.loads(v)
-            except:
-                return None
-        return v
     
     # Pydantic v2 config (also disables protected namespace warning for 'model_used')
     model_config = ConfigDict(from_attributes=True, protected_namespaces=())
