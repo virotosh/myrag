@@ -86,8 +86,8 @@ Always maintain a helpful and professional tone."""
                 context_info = cached_context
                 logger.info(context_info['filters'])
                 rerank = self.filter_documents(context_info['source_documents']+context_info['source_documents_notused'], context_info['filters'])
-                context_info['source_documents'] = rerank[:5]
-                context_info['source_documents_notused'] = rerank[5:]
+                context_info['source_documents'] = rerank[:1]
+                context_info['source_documents_notused'] = rerank[1:]
                 logger.info("FEEDBACK - Using cached context from stored message – skipping vector retrieval")
             elif use_rag:
                 context_info = await vector_store_service.get_relevant_context(
