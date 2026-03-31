@@ -349,7 +349,10 @@ Summary:"""
                     excluded_results.append(doc)
         matched = [ doc for doc in documents if doc in included_results and doc in excluded_results ]
         remaining = [ doc for doc in documents if doc not in matched ]
+        logger.info("included_results")
         logger.info(included_results)
+        logger.info("excluded_results")
+        logger.info(excluded_results)
         return matched #+ remaining
 
 # Global instance
