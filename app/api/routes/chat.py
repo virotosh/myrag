@@ -159,7 +159,7 @@ async def send_message(
                 "context_chunks_notused":   context_chunks_notused,
                 "source_documents":         used_sources,
                 "source_documents_notused": unused_sources,
-                "summary_included":         summary_included
+                "summary_included":         summary_included,
                 "total_chunks":             len(context_chunks+context_chunks_notused),
                 "average_score":            avg_score,
                 "query":                    ref_query.content,
