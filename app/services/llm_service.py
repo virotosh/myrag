@@ -84,7 +84,7 @@ Always maintain a helpful and professional tone."""
                 # Reuse context that was already retrieved and stored for a
                 # previous message – skip the vector store round-trip.
                 context_info = cached_context
-                rerank = filter_documents(context_info['sources_used']+context_info['source_documents_notused'], context_info['filters'])
+                rerank = self.filter_documents(context_info['sources_used']+context_info['source_documents_notused'], context_info['filters'])
                 context_info['source_documents'] = rerank[:5]
                 context_info['source_documents_notused'] = rerank[5:]
                 logger.info("FEEDBACK - Using cached context from stored message – skipping vector retrieval")
@@ -264,11 +264,11 @@ Summary:"""
  
     def author_match(doc_metadata: dict, filter_authors: list[str]) -> bool:
         """Return True if ALL filter_authors appear in either s2orcauthors or crossrefauthors."""
-        s2_authors = {normalize_name(a) for a in doc_metadata.get("s2orcauthors", [])}
-        cr_authors = {normalize_name(a) for a in doc_metadata.get("crossrefauthors", [])}
+        s2_authors = {self.normalize_name(a) for a in doc_metadata.get("s2orcauthors", [])}
+        cr_authors = {self.normalize_name(a) for a in doc_metadata.get("crossrefauthors", [])}
         combined_authors = s2_authors | cr_authors
      
-        return all(normalize_name(fa) in combined_authors for fa in filter_authors)
+        return all(self.normalize_name(fa) in combined_authors for fa in filter_authors)
      
      
     def topic_match(content_snippet: str, filter_topics: list[str]) -> bool:
@@ -323,9 +323,9 @@ Summary:"""
                 inc_topics = included_criteria.get("topics", [])
                 inc_years = included_criteria.get("years", [])
      
-                authors_ok = author_match(meta, inc_authors) if inc_authors else True
-                topics_ok = topic_match(snippet, inc_topics) if inc_topics else True
-                years_ok = year_in_range(year, inc_years) if (inc_years and year is not None) else True
+                authors_ok = self.author_match(meta, inc_authors) if inc_authors else True
+                topics_ok = self.topic_match(snippet, inc_topics) if inc_topics else True
+                years_ok = self.year_in_range(year, inc_years) if (inc_years and year is not None) else True
      
                 if authors_ok and topics_ok and years_ok:
                     included_results.append(doc)
@@ -338,9 +338,9 @@ Summary:"""
                 exc_topics = excluded_criteria.get("topics", [])
                 exc_years = excluded_criteria.get("years", [])
      
-                authors_ok = author_match(meta, exc_authors) if exc_authors else True
-                topics_ok = topic_match(snippet, exc_topics) if exc_topics else True
-                years_ok = year_in_range(year, exc_years) if (exc_years and year is not None) else True
+                authors_ok = self.author_match(meta, exc_authors) if exc_authors else True
+                topics_ok = self.topic_match(snippet, exc_topics) if exc_topics else True
+                years_ok = self.year_in_range(year, exc_years) if (exc_years and year is not None) else True
      
                 # Keep only documents that match ALL criteria (filter out non-matching ones)
                 if authors_ok and topics_ok and years_ok:
