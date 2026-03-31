@@ -232,8 +232,9 @@ Always maintain a helpful and professional tone."""
         rag_content: str,
     ) -> List:
         messages = []
-        if isinstance(source.get('document_metadata'), str):
-            source['document_metadata'] = json.loads(source['document_metadata'])
+        for source in context_info['source_documents']:
+            if isinstance(source.get('document_metadata'), str):
+                source['document_metadata'] = json.loads(source['document_metadata'])
         sources = [source['document_metadata']['title'] for source in context_info['source_documents']]
         authors = [source['document_metadata']['s2orcauthors'] for source in context_info['source_documents']] + \
                     [source['document_metadata']['crossrefauthors'] for source in context_info['source_documents']]
@@ -271,8 +272,9 @@ Always maintain a helpful and professional tone."""
         rag_content: str,
     ) -> List:
         messages = []
-        if isinstance(source.get('document_metadata'), str):
-            source['document_metadata'] = json.loads(source['document_metadata'])
+        for source in context_info['source_documents_notused']:
+            if isinstance(source.get('document_metadata'), str):
+                source['document_metadata'] = json.loads(source['document_metadata'])
         sources = [source['document_metadata']['title'] for source in context_info['source_documents_notused'][:5]]
         authors = [source['document_metadata']['s2orcauthors'] for source in context_info['source_documents_notused'][:5]] + \
                     [source['document_metadata']['crossrefauthors'] for source in context_info['source_documents_notused'][:5]]
