@@ -126,6 +126,8 @@ Always maintain a helpful and professional tone."""
                 
                 tokens_used = cb.total_tokens
                 cost = cb.total_cost
+            logger.info(f"Generate response  done {response.content}")
+            logger.info(f"Generate response  done {context_info}")
             # summary included
             summary_messages = self._build_messages_for_summary_included(
                 user_query=user_query,
