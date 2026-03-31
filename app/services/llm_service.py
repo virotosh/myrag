@@ -214,12 +214,12 @@ Always maintain a helpful and professional tone."""
         summary_prompt = f"""
             Summary template:
             "This response draws on <document_sources> spanning from <years>. 
-            These papers focus on a <specific theme>, published in <venues>. 
+            These papers focus on a specific <theme>, published in <shortvenue>. 
             Those <a list of all authors across document_sources> contribute <works>"
 
             Write a brief summary (200 words max, use summary template above) responds to the query "{user_query}"
             is based on the following souces, including inline 1-5 authors, important years, important venues, 
-            and 5 most important keywords exists in "topics" key across all the sources to describe the theme in the summary:
+            and use 5 most important keywords exists in "topics" key across all the sources to describe the <theme> in the summary:
 
             This is the response:
             {rag_content}
