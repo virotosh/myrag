@@ -70,6 +70,7 @@ class MessageUpdate(BaseModel):
     sources_notused: Optional[str] = None
     context_chunks: Optional[str] = None
     context_chunks_notused: Optional[str] = None
+    summary_included: Optional[str] = None
     relevance_score: Optional[str] = None
     tokens_used: Optional[int] = None
     processing_time: Optional[str] = None
@@ -114,6 +115,7 @@ class MessageResponse(MessageBase):
     sources_notused: Optional[List[SourceDocument]] = None
     context_chunks: Optional[List[str]] = None
     context_chunks_notused: Optional[List[str]] = None
+    summary_included: Optional[str] = None
     relevance_score: Optional[str] = None
     tokens_used: Optional[int] = None
     processing_time: Optional[str] = None

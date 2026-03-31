@@ -126,6 +126,23 @@ Always maintain a helpful and professional tone."""
                 
                 tokens_used = cb.total_tokens
                 cost = cb.total_cost
+            # summary
+            summary_messages = self._build_messages_for_summary(
+                user_query=user_query,
+                context_info=context_info,
+                rag_content=response.content
+            )
+            with get_openai_callback() as cb:
+                if model_kwargs:
+                    # Create temporary model with custom parameters
+                    temp_model = ChatOpenAI(
+                        api_key=settings.openai_api_key,
+                        model_name=settings.llm_model,
+                        **model_kwargs
+                    )
+                    summary = temp_model.invoke(summary_messages)
+                else:
+                    summary = self.chat_model.invoke(summary_messages)
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
             
@@ -147,6 +164,7 @@ Always maintain a helpful and professional tone."""
                 'sources_notused': context_info.get('source_documents_notused', []),
                 'context_chunks': context_info.get('context_chunks', []),
                 'context_chunks_notused': context_info.get('context_chunks_notused', [])
+                'summary_included': summary.content
             }
             
             logger.info(f"Generated response in {processing_time}ms using {tokens_used} tokens")
@@ -185,6 +203,31 @@ Always maintain a helpful and professional tone."""
         messages.append(HumanMessage(content=user_query))
         
         return messages
+
+    def _build_messages_for_summary(
+        self,
+        user_query: str,
+        context_info: Dict[str, Any],
+        rag_content: str,
+    ) -> List:
+        messages = []
+        summary_prompt = f"""
+            Summary template:
+            "This response draws on <document_sources> spanning from <years>. 
+            These papers focus on a <specific theme>, published in <venues>. 
+            Those <a list of all authors across document_sources> contribute <works>"
+
+            Write a brief summary (200 words max, use summary template above) responds to the query "{user_query}"
+            is based on the following souces, including inline 1-5 authors, important years, important venues, 
+            and 5 most important keywords exists in "topics" key across all the sources to describe the theme in the summary:
+
+            This is the response:
+            {rag_content}
+
+        """
+        messages.append(HumanMessage(content=summary_prompt))
+        return messages
+
     
     def _calculate_relevance_score(self, average_score: float, chunk_count: int) -> str:
         """Calculate relevance score category based on context quality."""
