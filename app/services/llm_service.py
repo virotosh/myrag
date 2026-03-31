@@ -345,6 +345,9 @@ Summary:"""
                 years_ok = self.year_in_range(year, exc_years) if (exc_years and year is not None) else True
      
                 # Keep only documents that match ALL criteria (filter out non-matching ones)
+                logger.info(authors_ok)
+                logger.info(topics_ok)
+                logger.info(years_ok)
                 if not authors_ok and not topics_ok and not years_ok:
                     excluded_results.append(doc)
         matched = [ doc for doc in documents if doc in included_results and doc in excluded_results ]
