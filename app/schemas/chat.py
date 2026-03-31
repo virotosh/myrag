@@ -158,6 +158,7 @@ class ChatRequest(BaseModel):
     conversation_id: Optional[int] = None
     session_id: Optional[str] = None
     message_id: Optional[int] = None
+    filters: Optional[dict] = None
     use_rag: bool = True
     max_tokens: Optional[int] = 1000
     temperature: Optional[float] = 0.7
