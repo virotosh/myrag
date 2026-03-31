@@ -85,9 +85,13 @@ Always maintain a helpful and professional tone."""
                 # previous message – skip the vector store round-trip.
                 context_info = cached_context
                 logger.info(context_info['filters'])
-                rerank = self.filter_documents(context_info['source_documents']+context_info['source_documents_notused'], context_info['filters'])
+                rerank,rerank_chunks = self.filter_documents(context_info['source_documents']+context_info['source_documents_notused'], 
+                                                context_info['filters'],
+                                                context_info['context_chunks']+context_info['context_chunks_notused'])
                 context_info['source_documents'] = rerank[:5]
                 context_info['source_documents_notused'] = rerank[5:]
+                context_info['context_chunks'] = rerank_chunks[:5]
+                context_info['context_chunks_notused'] = rerank_chunks[5:]
                 logger.info("FEEDBACK - Using cached context from stored message – skipping vector retrieval")
             elif use_rag:
                 context_info = await vector_store_service.get_relevant_context(
@@ -405,6 +409,7 @@ Summary:"""
     def filter_documents(
         self,
         documents: list[dict[str, Any]],
+        context_chunks: list[str],
         filters: dict[str, dict],
     ) -> dict[str, list[dict]]:
         """
@@ -431,8 +436,10 @@ Summary:"""
      
         included_results = []
         excluded_results = []
+
+        new_context_chunks = []
      
-        for doc in documents:
+        for idx,doc in enumerate(documents):
             meta = doc.get("document_metadata", {})
             snippet = doc.get("content_snippet", "")
             year = meta.get("year")
@@ -450,6 +457,7 @@ Summary:"""
      
                 if authors_ok and topics_ok and years_ok:
                     included_results.append(doc)
+                    new_context_chunks.append(context_chunks[idx])
      
             # ── EXCLUDED logic ───────────────────────────────────────────────────
             # Remove documents that fail ANY of the three criteria
@@ -478,7 +486,7 @@ Summary:"""
         logger.info(included_results)
         logger.info("excluded_results")
         logger.info(excluded_results)
-        return matched #+ remaining
+        return matched, new_context_chunks #+ remaining
 
 # Global instance
 llm_service = LLMService()
