@@ -205,16 +205,32 @@ Always maintain a helpful and professional tone."""
         context_info: Dict[str, Any],
         rag_content: str,
     ) -> List:
-        messages = []
-        for source in context_info['source_documents']:
+        sources_data = context_info['source_documents']
+
+        # Parse metadata in one pass
+        for source in sources_data:
             if isinstance(source.get('document_metadata'), str):
                 source['document_metadata'] = json.loads(source['document_metadata'])
-        sources = [source['document_metadata']['title'] for source in context_info['source_documents']]
-        authors = [source['document_metadata']['s2orcauthors'] for source in context_info['source_documents']] + \
-                    [source['document_metadata']['crossrefauthors'] for source in context_info['source_documents']]
-        venues = [source['document_metadata']['shortvenue'] for source in context_info['source_documents']]
-        topics = [source['document_metadata']['topics'][:10] for source in context_info['source_documents']]
-        years = [source['document_metadata']['year'] for source in context_info['source_documents']]
+
+        metas = [source['document_metadata'] for source in sources_data]
+
+        sources = [m['title'] for m in metas]
+
+        # Flatten both author fields into a single deduplicated list
+        authors = list(dict.fromkeys(itertools.chain.from_iterable(
+            (m.get('s2orcauthors') or []) + (m.get('crossrefauthors') or [])
+            for m in metas
+        )))
+
+        # Deduplicated venues and sorted years
+        venues = list(dict.fromkeys(m['shortvenue'] for m in metas))
+        years  = sorted(set(m['year'] for m in metas))
+
+        # Flatten all topics across sources, deduplicate, take top 5
+        topics = list(dict.fromkeys(itertools.chain.from_iterable(
+            m.get('topics', []) for m in metas
+        )))[:5]
+
         summary_prompt = f"""
             Summary template:
             "This response draws on sources spanning from <years>. 
@@ -235,9 +251,8 @@ Always maintain a helpful and professional tone."""
             topics: {topics}
             years: {years}
         """
-        #logger.info(f"summary_prompt  {summary_prompt}")
-        messages.append(HumanMessage(content=summary_prompt))
-        return messages
+        return [HumanMessage(content=summary_prompt)]
+
 
     def _build_messages_for_summary_excluded(
         self,
@@ -245,16 +260,31 @@ Always maintain a helpful and professional tone."""
         context_info: Dict[str, Any],
         rag_content: str,
     ) -> List:
-        messages = []
-        for source in context_info['source_documents_notused']:
+        # Slice FIRST, then parse — avoids touching unused records
+        sources_data = context_info['source_documents_notused'][:5]
+
+        for source in sources_data:
             if isinstance(source.get('document_metadata'), str):
                 source['document_metadata'] = json.loads(source['document_metadata'])
-        sources = [source['document_metadata']['title'] for source in context_info['source_documents_notused'][:5]]
-        authors = [source['document_metadata']['s2orcauthors'] for source in context_info['source_documents_notused'][:5]] + \
-                    [source['document_metadata']['crossrefauthors'] for source in context_info['source_documents_notused'][:5]]
-        venues = [source['document_metadata']['shortvenue'] for source in context_info['source_documents_notused'][:5]]
-        topics = [source['document_metadata']['topics'][:10] for source in context_info['source_documents_notused'][:5]]
-        years = [source['document_metadata']['year'] for source in context_info['source_documents_notused'][:5]]
+
+        metas = [source['document_metadata'] for source in sources_data]
+
+        sources = [m['title'] for m in metas]
+
+        # Flatten both author fields into a single deduplicated list
+        authors = list(dict.fromkeys(itertools.chain.from_iterable(
+            (m.get('s2orcauthors') or []) + (m.get('crossrefauthors') or [])
+            for m in metas
+        )))
+
+        venues = list(dict.fromkeys(m['shortvenue'] for m in metas))
+        years  = sorted(set(m['year'] for m in metas))
+
+        # Flatten all topics across excluded sources, deduplicate, take top 5
+        topics = list(dict.fromkeys(itertools.chain.from_iterable(
+            m.get('topics', []) for m in metas
+        )))[:5]
+
         summary_prompt = f"""
             Summary template:
             "Several sources were excluded from the response spanning from <years>. 
@@ -275,9 +305,7 @@ Always maintain a helpful and professional tone."""
             topics: {topics}
             years: {years}
         """
-        #logger.info(f"summary_prompt  {summary_prompt}")
-        messages.append(HumanMessage(content=summary_prompt))
-        return messages
+        return [HumanMessage(content=summary_prompt)]
 
     async def _generate_summary_included(self, user_query, context_info, response, model_kwargs):
         if context_info['source_documents'] == []:
