@@ -6,6 +6,7 @@ from typing import Dict, Any, Optional, List
 import time
 import json
 from datetime import datetime
+import asyncio
 
 # OpenAI and LangChain imports
 from langchain_openai import ChatOpenAI
@@ -131,42 +132,11 @@ Always maintain a helpful and professional tone."""
                 tokens_used = cb.total_tokens
                 cost = cb.total_cost
             logger.info(f"Generate response  done {response.content}")
-            # summary included
-            summary_messages = self._build_messages_for_summary_included(
-                user_query=user_query,
-                context_info=context_info,
-                rag_content=response.content
+            # In your main method (must be async):
+            summary_included, summary_excluded = await asyncio.gather(
+                self._generate_summary_included(user_query, context_info, response, model_kwargs),
+                self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
             )
-            with get_openai_callback() as cb:
-                if model_kwargs:
-                    # Create temporary model with custom parameters
-                    temp_model = ChatOpenAI(
-                        api_key=settings.openai_api_key,
-                        model_name=settings.llm_model,
-                        **model_kwargs
-                    )
-                    summary_included = temp_model.invoke(summary_messages)
-                else:
-                    summary_included = self.chat_model.invoke(summary_messages)
-            logger.info(f"Generate summary_included  done {summary_included.content}")
-            # summary excluded
-            summary_messages = self._build_messages_for_summary_excluded(
-                user_query=user_query,
-                context_info=context_info,
-                rag_content=response.content
-            )
-            with get_openai_callback() as cb:
-                if model_kwargs:
-                    # Create temporary model with custom parameters
-                    temp_model = ChatOpenAI(
-                        api_key=settings.openai_api_key,
-                        model_name=settings.llm_model,
-                        **model_kwargs
-                    )
-                    summary_excluded = temp_model.invoke(summary_messages)
-                else:
-                    summary_excluded = self.chat_model.invoke(summary_messages)
-            logger.info(f"Generate summary_excluded  done {summary_excluded.content}")
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
             
@@ -319,6 +289,44 @@ Always maintain a helpful and professional tone."""
             return "Medium"
         else:
             return "Low"
+
+    async def _generate_summary_included(self, user_query, context_info, response, model_kwargs):
+        summary_messages = self._build_messages_for_summary_included(
+            user_query=user_query,
+            context_info=context_info,
+            rag_content=response.content
+        )
+        with get_openai_callback() as cb:
+            if model_kwargs:
+                temp_model = ChatOpenAI(
+                    api_key=settings.openai_api_key,
+                    model_name=settings.llm_model,
+                    **model_kwargs
+                )
+                result = await temp_model.ainvoke(summary_messages)
+            else:
+                result = await self.chat_model.ainvoke(summary_messages)
+        logger.info(f"Generate summary_included done {result.content}")
+        return result
+
+    async def _generate_summary_excluded(self, user_query, context_info, response, model_kwargs):
+        summary_messages = self._build_messages_for_summary_excluded(
+            user_query=user_query,
+            context_info=context_info,
+            rag_content=response.content
+        )
+        with get_openai_callback() as cb:
+            if model_kwargs:
+                temp_model = ChatOpenAI(
+                    api_key=settings.openai_api_key,
+                    model_name=settings.llm_model,
+                    **model_kwargs
+                )
+                result = await temp_model.ainvoke(summary_messages)
+            else:
+                result = await self.chat_model.ainvoke(summary_messages)
+        logger.info(f"Generate summary_excluded done {result.content}")
+        return result
     
     async def generate_conversation_title(self, first_message: str) -> str:
         """Generate a title for conversation based on first message."""
