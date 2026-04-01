@@ -442,6 +442,12 @@ Summary:"""
         return all(topic.lower() in snippet_lower for topic in filter_topics)
      
      
+    def venue_match(self, venue: str, filter_venues: list[str]) -> bool:
+        """Return True if ALL filter_venues appear (case-insensitive) in venue."""
+        venue_lower = venue.lower()
+        return all(filter_venue.lower() in venue_lower for filter_venue in filter_venues)
+     
+     
     def year_in_range(self, year: int, year_range: list[int]) -> bool:
         """Return True if year is within [year_range[0], year_range[1]]."""
         return year_range[0] <= year <= year_range[1]
@@ -483,6 +489,7 @@ Summary:"""
         for idx,doc in enumerate(documents):
             meta = doc.get("document_metadata", {})
             snippet = doc.get("content_snippet", "")
+            venue = doc.get("content_snippet", "")
             year = meta.get("year")
      
             # ── INCLUDED logic ──────────────────────────────────────────────────
@@ -490,13 +497,15 @@ Summary:"""
             if included_criteria:
                 inc_authors = included_criteria.get("authors", [])
                 inc_topics = included_criteria.get("topics", [])
+                inc_venues = included_criteria.get("venues", [])
                 inc_years = included_criteria.get("years", [])
      
                 authors_ok = self.author_match(meta, inc_authors) if inc_authors else True
                 topics_ok = self.topic_match(snippet, inc_topics) if inc_topics else True
+                venues_ok = self.venue_match(venue, inc_venues) if inc_venues else True
                 years_ok = self.year_in_range(year, inc_years) if (inc_years and year is not None) else True
      
-                if authors_ok and topics_ok and years_ok:
+                if authors_ok and topics_ok and venues_ok and years_ok:
                     included_results.append(doc)
                     new_context_chunks.append(context_chunks[idx])
      
@@ -506,20 +515,20 @@ Summary:"""
             if excluded_criteria:
                 exc_authors = excluded_criteria.get("authors", [])
                 exc_topics = excluded_criteria.get("topics", [])
+                exc_venues = excluded_criteria.get("venues", [])
                 exc_years = excluded_criteria.get("years", [])
      
                 authors_ok = self.author_match(meta, exc_authors) if exc_authors else True
                 authors_ok = authors_ok if len(exc_authors)>0 else False
                 topics_ok = self.topic_match(snippet, exc_topics) if exc_topics else True
                 topics_ok = topics_ok if len(exc_topics)>0 else False
+                venues_ok = self.venue_match(venue, exc_venues) if exc_venues else True
+                venues_ok = venues_ok if len(exc_venues)>0 else False
                 years_ok = self.year_in_range(year, exc_years) if (exc_years and year is not None) else True
                 years_ok = years_ok if len(exc_years)>0 else False
      
                 # Keep only documents that match ALL criteria (filter out non-matching ones)
-                logger.info(authors_ok)
-                logger.info(topics_ok)
-                logger.info(years_ok)
-                if not authors_ok and not topics_ok and not years_ok:
+                if not authors_ok and not topics_ok and not venues_ok and not years_ok:
                     excluded_results.append(doc)
         matched = [ doc for doc in documents if doc in included_results and doc in excluded_results ]
         remaining = [ doc for doc in documents if doc not in matched ]

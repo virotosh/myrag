@@ -96,10 +96,10 @@ async def send_message(
                       skipping a new vector-store retrieval.
     - **filters**: Optional filters dictionary {"included": 
                                         {"authors": ["Marianna Apidianaki"],
-                                        "topics": [],"years": [2000, 2025]},
+                                        "topics": [],"venues": [],"years": [2000, 2025]},
                                     "excluded": 
                                         {"authors": [],
-                                        "topics": [],"years": [1000, 1100]} },
+                                        "topics": [],"venues": [],"years": [1000, 1100]} },
     - **use_rag**: Whether to use RAG for context (default: True)
     - **max_tokens**: Maximum tokens for response
     - **temperature**: Response creativity (0.0-1.0)
