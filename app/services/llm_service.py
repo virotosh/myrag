@@ -158,8 +158,8 @@ Always maintain a helpful and professional tone."""
                 'sources_notused': context_info.get('source_documents_notused', []),
                 'context_chunks': context_info.get('context_chunks', []),
                 'context_chunks_notused': context_info.get('context_chunks_notused', []),
-                'summary_included': summary_included.content,
-                'summary_excluded': summary_excluded.content
+                'summary_included': summary_included,
+                'summary_excluded': summary_excluded
             }
             
             logger.info(f"Generated response in {processing_time}ms using {tokens_used} tokens")
@@ -278,19 +278,10 @@ Always maintain a helpful and professional tone."""
         #logger.info(f"summary_prompt  {summary_prompt}")
         messages.append(HumanMessage(content=summary_prompt))
         return messages
-    
-    def _calculate_relevance_score(self, average_score: float, chunk_count: int) -> str:
-        """Calculate relevance score category based on context quality."""
-        if chunk_count == 0:
-            return "None"
-        elif average_score >= 0.77 and chunk_count >= 3:
-            return "High"
-        elif average_score >= 0.6 and chunk_count >= 2:
-            return "Medium"
-        else:
-            return "Low"
 
     async def _generate_summary_included(self, user_query, context_info, response, model_kwargs):
+        if context_info['source_documents'] == []:
+            return ""
         summary_messages = self._build_messages_for_summary_included(
             user_query=user_query,
             context_info=context_info,
@@ -306,10 +297,12 @@ Always maintain a helpful and professional tone."""
                 result = await temp_model.ainvoke(summary_messages)
             else:
                 result = await self.chat_model.ainvoke(summary_messages)
-        logger.info(f"Generate summary_included done {result.content}")
-        return result
+        #logger.info(f"Generate summary_included done {result.content}")
+        return result.content
 
     async def _generate_summary_excluded(self, user_query, context_info, response, model_kwargs):
+        if context_info['source_documents_notused'] == []:
+            return ""
         summary_messages = self._build_messages_for_summary_excluded(
             user_query=user_query,
             context_info=context_info,
@@ -325,8 +318,19 @@ Always maintain a helpful and professional tone."""
                 result = await temp_model.ainvoke(summary_messages)
             else:
                 result = await self.chat_model.ainvoke(summary_messages)
-        logger.info(f"Generate summary_excluded done {result.content}")
-        return result
+        #logger.info(f"Generate summary_excluded done {result.content}")
+        return result.content
+    
+    def _calculate_relevance_score(self, average_score: float, chunk_count: int) -> str:
+        """Calculate relevance score category based on context quality."""
+        if chunk_count == 0:
+            return "None"
+        elif average_score >= 0.77 and chunk_count >= 3:
+            return "High"
+        elif average_score >= 0.6 and chunk_count >= 2:
+            return "Medium"
+        else:
+            return "Low"
     
     async def generate_conversation_title(self, first_message: str) -> str:
         """Generate a title for conversation based on first message."""
