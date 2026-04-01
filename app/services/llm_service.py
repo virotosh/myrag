@@ -7,6 +7,7 @@ import time
 import json
 from datetime import datetime
 import asyncio
+import itertools
 
 # OpenAI and LangChain imports
 from langchain_openai import ChatOpenAI
