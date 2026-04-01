@@ -489,7 +489,7 @@ Summary:"""
         for idx,doc in enumerate(documents):
             meta = doc.get("document_metadata", {})
             snippet = doc.get("content_snippet", "")
-            venue = doc.get("shortvenue", "")
+            venue = meta.get("shortvenue", "")
             year = meta.get("year")
      
             # ── INCLUDED logic ──────────────────────────────────────────────────
