@@ -391,7 +391,7 @@ Always maintain a helpful and professional tone."""
                 result = await temp_model.ainvoke(summary_messages)
             else:
                 result = await self.chat_model.ainvoke(summary_messages)
-        #logger.info(f"Generate summary_included done {result.content}")
+        logger.info(f"Generate summary_included done {result.content}")
         summary_res = json.loads(result.content)
         return summary_res['included'],summary_res['excluded']
 
