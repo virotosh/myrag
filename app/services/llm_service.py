@@ -317,6 +317,7 @@ Always maintain a helpful and professional tone."""
             ```
 
         """
+        logger.info(f"summary_prompt {summary_prompt}")
         return [HumanMessage(content=summary_prompt)]
 
 
@@ -371,7 +372,6 @@ Always maintain a helpful and professional tone."""
             topics: {topics}
             years: {years}
         """
-        logger.info(f"summary_prompt {summary_prompt}")
         return [HumanMessage(content=summary_prompt)]
 
     async def _generate_summary_included(self, user_query, context_info, response, model_kwargs):
