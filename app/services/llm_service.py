@@ -134,10 +134,11 @@ Always maintain a helpful and professional tone."""
                 cost = cb.total_cost
             logger.info(f"Generate response  done {response.content}")
             # In your main method (must be async):
-            summary_included, summary_excluded = await asyncio.gather(
-                self._generate_summary_included(user_query, context_info, response, model_kwargs),
-                self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
-            )
+            summary_included, summary_excluded = self._generate_summary_included(user_query, context_info, response, model_kwargs)
+            #await asyncio.gather(
+            #    self._generate_summary_included(user_query, context_info, response, model_kwargs),
+            #    self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
+            #)
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
             
@@ -206,6 +207,7 @@ Always maintain a helpful and professional tone."""
         context_info: Dict[str, Any],
         rag_content: str,
     ) -> List:
+        # INCLUDED
         sources_data = context_info['source_documents']
 
         # Parse metadata in one pass
@@ -232,25 +234,89 @@ Always maintain a helpful and professional tone."""
             m.get('topics', []) for m in metas
         )))[:5]
 
+        # EXCLUDED
+        exc_sources_data = context_info['source_documents_notused'][:5]
+
+        for source in exc_sources_data:
+            if isinstance(source.get('document_metadata'), str):
+                source['document_metadata'] = json.loads(source['document_metadata'])
+
+        exc_metas = [source['document_metadata'] for source in exc_sources_data]
+
+        exc_sources = [m['title'] for m in exc_metas]
+
+        # Flatten both author fields into a single deduplicated list
+        exc_authors = list(dict.fromkeys(itertools.chain.from_iterable(
+            (m.get('s2orcauthors') or []) + (m.get('crossrefauthors') or [])
+            for m in exc_metas
+        )))
+
+        exc_venues = list(dict.fromkeys(m['shortvenue'] for m in exc_metas))
+        exc_years  = sorted(set(m['year'] for m in exc_metas))
+
+        # Flatten all topics across excluded sources, deduplicate, take top 5
+        exc_topics = list(dict.fromkeys(itertools.chain.from_iterable(
+            m.get('topics', []) for m in exc_metas
+        )))[:5]
+
         summary_prompt = f"""
-            Summary template:
-            "This response draws on sources spanning from <years>. 
-            These papers focus on a specific <theme>, published in <shortvenue> (use shortvenues in below Sources). 
-            Those <a list of all authors across document_sources> contribute <works>"
+            # Citation Summary Generation Prompt
 
-            Write a brief summary (150 words max, use summary template above) responds to the query "{user_query}"
-            is based on the following sources, including inline 1-5 authors, important years, important venues (use acronyms), 
-            and use 5 most important keywords exists in "topics" key across all the sources to describe the <theme> in the summary:
+            You are generating two summary strings about academic citations. Output exactly two fields: `included` and `excluded`.
 
-            This is the response:
-            {rag_content}
+            ## Format Requirements
 
-            Sources:
-            {sources}
-            authors: {authors}
-            venues: {venues}
-            topics: {topics}
-            years: {years}
+            Both strings must follow this exact bracket convention:
+            - **Years**: `[YYYY]` — e.g., `[2023]`
+            - **Authors**: `[First Last et al.]` — e.g., `[Tom Brown et al.]`
+            - **Venues**: `[VENUE]` — e.g., `[NeurIPS]`, `[ACL]`, `[EMNLP-Industry Track]`
+
+            Every author name and every venue must be wrapped in square brackets. Always use the `[First Last et al.]` format for authors, even when there are only two authors — never use the `and` form (e.g., do NOT write `[Weizhe Yuan and Liu]`). Do not use brackets for any other content. Do not use markdown, bullet points, or line breaks — output must be a single flowing sentence per field.
+
+            ## Structure
+
+            Context: {rag_content}
+            ### `included` field
+            included Sources: {sources}
+            included authors: {authors}
+            included venues: {venues}
+            included topics: {topics}
+            included years: {years}
+            Summarize works that ARE present in the provided Context, included sources, included authors, included venues, included topics, included years. Begin with:
+            > "The cited works span from [EARLIEST_YEAR] to [LATEST_YEAR] and include..."
+
+            Then list each work as: `[Authors] [Venue] on <brief topic>`, joined naturally with commas and "and". Group works by shared contribution where sensible (e.g., "[Author A et al.] [ACL] and [Author B et al.] [ACL] on prompt quality").
+
+            ### `excluded` field
+            excluded Sources: {exc_sources}
+            excluded authors: {exc_authors}
+            excluded venues: {exc_venues}
+            excluded topics: {exc_topics}
+            excluded years: {exc_years}
+            Summarize works that are RELEVANT to the topic but NOT in the provided Context, excluded sources, excluded authors, excluded venues, excluded topics, excluded years. Begin with:
+            > "Additional works, not included in the context but potentially relevant, span from [EARLIEST_YEAR] to [LATEST_YEAR] and include..."
+
+            Follow the same `[Authors] [Venue] on <topic>` pattern.
+
+            ## Rules
+
+            1. Use only the authors, years, and venues actually cited — never fabricate.
+            2. Always format authors as `[First Last et al.]`. Never use `[Name and Name]` or `[Name and Last]`.
+            3. Keep topic descriptions to 3–8 words.
+            4. Do not wrap topic descriptions in brackets.
+            5. Do not include paper titles — only authors, venue, and a short topic phrase.
+            6. End both fields with a period for consistency.
+            7. Return valid JSON: `{"included": "...", "excluded": "..."}`
+
+            ## Example Output
+
+            ```json
+            {
+              "included": "The cited works span from [2020] to [2023] and include [Tom Brown et al.] [NeurIPS] on few-shot learning with GPT-3, [Nikita Nangia et al.] [EMNLP] on bias evaluation, [Wayne Zhao et al.] [EMNLP-Industry Track] surveying large language model capabilities, [Yiming Sun et al.] [ACL] and [Pengfei Liu et al.] [ACL] on prompt quality and fine-tuning comparisons, and [Takeshi Kojima et al.] [NeurIPS] and [Weizhe Yuan et al.] [ACL] on multi-task performance and comparisons with traditional models.",
+              "excluded": "Additional works, not included in the context but potentially relevant, span from [2020] to [2023] and include [Colin Raffel et al.] [ICLR] on text-to-text transfer learning, [Sébastien Bubeck et al.] [FOCS] on reasoning capabilities of large models, [Xuezhi Wang et al.] [NeurIPS] on prompt engineering strategies, [Hugo Touvron et al.] [ICML] on efficient fine-tuning, and [Peter Henderson et al.] [ACL] on bias and fairness evaluation."
+            }
+            ```
+
         """
         return [HumanMessage(content=summary_prompt)]
 
@@ -327,7 +393,8 @@ Always maintain a helpful and professional tone."""
             else:
                 result = await self.chat_model.ainvoke(summary_messages)
         #logger.info(f"Generate summary_included done {result.content}")
-        return result.content
+        summary_res = json.loads(result.content)
+        return summary_res['included'],summary_res['excluded']
 
     async def _generate_summary_excluded(self, user_query, context_info, response, model_kwargs):
         if context_info['source_documents_notused'] == []:
