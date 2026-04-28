@@ -185,7 +185,8 @@ Always maintain a helpful and professional tone."""
         system_content = self.system_prompt
         if context_info.get('source_documents'):
             for source in context_info['source_documents']:
-                logger.info(f"source {source}")
+                if isinstance(source.get('document_metadata'), str):
+                    source['document_metadata'] = json.loads(source['document_metadata'])
                 system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['document_metadata']['title'][0]}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
