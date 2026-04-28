@@ -46,8 +46,8 @@ Always maintain a helpful and professional tone.
 2. If the context doesn't contain enough information, say so clearly
 3. Place each citation marker (i.e. [N] inside square brackets, N is an order number in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
 4. Replace in-text authors mentioned in the provided context with the provided authors.
-5. All provided contexts [CONTEXT]{context}[/CONTEXT] must be cited as [N] inside square brackets, if a context does not have the sentence it supports, put it in the first sentence in the answer.
-4. If no context is provided, answer based on your general knowledge but mention this limitation
+5. If no context is provided, answer based on your general knowledge but mention this limitation
+6. There are five provided contexts [CONTEXT]{context}[/CONTEXT], and all must be cited as [N], if any context does not have the sentence it supports, cite them in the first sentence of the answer.
 
 """
         
