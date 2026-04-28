@@ -183,11 +183,10 @@ Always maintain a helpful and professional tone."""
         
         # Add system message with context
         system_content = self.system_prompt
-        logger.info(f"context_info {context_info}")
-        if context_info.get('sources_used'):
-            for source in context_info['sources_used']:
+        if context_info.get('source_documents'):
+            for source in context_info['source_documents']:
             #context_text = "\n\n".join(context_info['context_chunks'])
-                system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n[/CONTEXT]"
+                system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['document_metadata']['title'][0]}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
         
