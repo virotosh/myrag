@@ -38,8 +38,8 @@ Instructions:
 1. Use the provided context to answer questions accurately and comprehensively
 2. If the context doesn't contain enough information, say so clearly
 3. Replace in-text authors mentioned in the provided context with the provided authors.
-4. Place each citation marker (i.e. [N] inside square brackets in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
-5. All [N] in provided contexts must be cited, always put [N] in the first sentence of your answer if [N] not yet cite.
+4. Place a in-text citation marker (i.e. [N] inside square brackets in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
+5. All [N] in provided contexts must be cited.
 6. If no context is provided, answer based on your general knowledge but mention this limitation
 
 Context will be provided in the following format:
