@@ -41,13 +41,11 @@ Instructions:
 4. Be concise but thorough in your responses, but include all provided contexts in the answer
 5. If no context is provided, answer based on your general knowledge but mention this limitation
 6. Always ignore citations/references mentioned in the provided context.
+7. Always maintain a helpful and professional tone.
 
-Context will be provided in the following format:
-[CONTEXT]
-{context}
-[/CONTEXT]
+Five Contexts will be provided in the following format:
 
-Always maintain a helpful and professional tone."""
+"""
         
         logger.info(f"LLM service initialized with {settings.llm_model}")
     
