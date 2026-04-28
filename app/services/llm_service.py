@@ -40,7 +40,7 @@ Instructions:
 3. Always cite which documents you're referencing when possible
 4. Be concise but thorough in your responses
 5. If no context is provided, answer based on your general knowledge but mention this limitation
-6. Place each citation marker (i.e. [N] inside square brackets, N is a order number in the provided context list) immediately after the sentence it supports, never collect citations at the end.
+6. Place each citation marker (i.e. [N] inside square brackets, N is an order number in the provided context list) immediately after the sentence it supports, never collect citations at the end and never include citations mentioned in the provided context.
 
 Context will be provided in the following format:
 [CONTEXT]
@@ -183,10 +183,10 @@ Always maintain a helpful and professional tone."""
         
         # Add system message with context
         system_content = self.system_prompt
-        if context_info.get('context_chunks'):
-            for chunk in context_info['context_chunks']:
+        if context_info.get('sources_used'):
+            for source in context_info['sources_used']:
             #context_text = "\n\n".join(context_info['context_chunks'])
-                system_content += f"\n\n[CONTEXT]\n{chunk}\n[/CONTEXT]"
+                system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['title'][0]}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
         
