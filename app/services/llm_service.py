@@ -393,8 +393,10 @@ Always maintain a helpful and professional tone."""
             else:
                 result = await self.chat_model.ainvoke(summary_messages)
         logger.info(f"Generate summary_included done {result.content}")
-        #summary_res = json.loads(result.content)
-        return result.content
+        summary_res = result.content
+        if isinstance(summary_res, str):
+            summary_res = json.loads(result.content)
+        return summary_res
 
     async def _generate_summary_excluded(self, user_query, context_info, response, model_kwargs):
         if context_info['source_documents_notused'] == []:
