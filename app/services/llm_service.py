@@ -185,7 +185,7 @@ Always maintain a helpful and professional tone."""
         system_content = self.system_prompt
         if context_info.get('source_documents'):
             for source in context_info['source_documents']:
-            #context_text = "\n\n".join(context_info['context_chunks'])
+                logger.info(f"source {source}")
                 system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['document_metadata']['title'][0]}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
