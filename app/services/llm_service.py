@@ -110,6 +110,7 @@ Always maintain a helpful and professional tone."""
                 context_info=context_info,
                 conversation_history=conversation_history
             )
+            logger.info(f"messages {messages}")
             
             # Update model parameters if provided
             model_kwargs = {}
@@ -330,7 +331,6 @@ Always maintain a helpful and professional tone."""
             context_info=context_info,
             rag_content=response.content
         )
-        logger.info(f"summary_messages {summary_messages}")
         with get_openai_callback() as cb:
             if model_kwargs:
                 temp_model = ChatOpenAI(
