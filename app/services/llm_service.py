@@ -134,11 +134,10 @@ Always maintain a helpful and professional tone."""
                 cost = cb.total_cost
             logger.info(f"Generate response  done {response.content}")
             # In your main method (must be async):
-            summary_included, summary_excluded = self._generate_summary_included(user_query, context_info, response, model_kwargs)
-            #await asyncio.gather(
-            #    self._generate_summary_included(user_query, context_info, response, model_kwargs),
-            #    self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
-            #)
+            summary_included, summary_excluded = await asyncio.gather(
+                self._generate_summary_included(user_query, context_info, response, model_kwargs),
+                #self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
+            )
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
             
