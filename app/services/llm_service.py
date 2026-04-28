@@ -38,12 +38,17 @@ Instructions:
 1. Use the provided context to answer questions accurately and comprehensively
 2. If the context doesn't contain enough information, say so clearly
 3. Always cite which documents you're referencing when possible. Place each citation marker (i.e. [N] inside square brackets, N is an order number in the provided context list) immediately after the sentence it supports, never collect citations at the end.
-4. Be concise but thorough in your responses, but include all provided contexts in the answer
-5. If no context is provided, answer based on your general knowledge but mention this limitation
-6. Always ignore citations/references mentioned in the provided context.
-7. Always maintain a helpful and professional tone.
+4. Be concise but thorough in your responses
+5. Must include all provided contexts in the answer
+6. If no context is provided, answer based on your general knowledge but mention this limitation
+7. Always ignore citations/references mentioned in the provided context.
 
-Five Contexts will be provided in the following format:
+Context will be provided in the following format:
+[CONTEXT]
+{context}
+[/CONTEXT]
+
+Contexts are as follows:
 
 """
         
