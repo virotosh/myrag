@@ -138,6 +138,7 @@ Always maintain a helpful and professional tone."""
                 self._generate_summary_included(user_query, context_info, response, model_kwargs),
                 #self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
             )
+            logger.info(f"Generate response  done {summary}")
             summary_included, summary_excluded = summary['included'],summary['excluded']
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
