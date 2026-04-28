@@ -35,16 +35,19 @@ class LLMService:
         self.system_prompt = """You are a helpful AI assistant that answers questions based on provided context from documents. 
 
 Instructions:
-1. Use the provided context to answer questions accurately and comprehensively
-2. If the context doesn't contain enough information, say so clearly
-3. Replace in-text authors mentioned in the provided context with the provided authors
-4. Each provided context [N] must be mentioned in the answer only once.
-5. Place a in-text citation marker (i.e. [N] inside square brackets is an ordering number in the provided context list) immediately after the sentence it supports, never collect citations at the end
-6. If no context is provided, answer based on your general knowledge but mention this limitation
+1. Ground your answer in the provided context, aiming for accuracy and full coverage of what the sources support.
+2. If the context lacks the information needed to answer, state this limitation explicitly rather than speculating.
+3. Wherever the context contains in-text author names, replace them with the author names supplied separately.
+4. Cite every passage exactly once — each [N] from the context list must appear in the answer one time, no more and no less.
+5. Place each citation marker [N] directly after the sentence it supports. Group citations together if they support the same sentence.
+6. If no context is provided, answer from general knowledge and clearly disclose that no sources were available.
 
 Context will be provided in the following format:
 [CONTEXT]
-[N] {context}
+[1] {passage text}
+[2] {passage text}
+...
+[N] {passage text}
 [/CONTEXT]
 
 Always maintain a helpful and professional tone.
