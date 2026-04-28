@@ -301,7 +301,7 @@ Always maintain a helpful and professional tone."""
 
             1. Use only the authors, years, and venues actually cited — never fabricate.
             2. Always format authors as `[First Last et al.]`. Never use `[Name and Name]` or `[Name and Last]`.
-            3. Keep topic descriptions to 3–8 words.
+            3. Keep topic descriptions to 3–8 topics, keep _ in the topics.
             4. Do not wrap topic descriptions in brackets.
             5. Do not include paper titles — only authors, venue, and a short topic phrase.
             6. End both fields with a period for consistency.
