@@ -36,10 +36,10 @@ class LLMService:
 
 Instructions:
 1. Ground your answer in the provided context, aiming for accuracy and full coverage of what the sources support.
-2. Limit your answer no more than 50 words.
+2. Limit your answer no more than 80 words.
 3. Wherever the passage contains in-text author names, replace them with the provided authors.
 4. Cite every passage exactly once — each [N] from the context list must appear in the answer one time, no more and no less.
-5. Place each citation marker [N] directly in the sentence it supports. Group citations together if they support the same sentence.
+5. Place each citation marker [N] directly in the sentence it supports and before a dot "." . Group citations together if they support the same sentence.
 6. If no context is provided, answer from general knowledge and clearly disclose that no sources were available.
 
 Context will be provided in the following format:
