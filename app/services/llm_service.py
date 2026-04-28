@@ -40,7 +40,7 @@ Instructions:
 3. Always cite which documents you're referencing when possible
 4. Be concise but thorough in your responses
 5. If no context is provided, answer based on your general knowledge but mention this limitation
-6. Put number [N] as reference in the text if a context snippet is referred, N is an index in the provided context list
+6. Place each citation marker (i.e. [N] inside square brackets, N is an index of the provided context list) immediately after the clause it supports, never collect citations at the end.
 
 Context will be provided in the following format:
 [CONTEXT]
