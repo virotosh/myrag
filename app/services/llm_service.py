@@ -44,10 +44,10 @@ Instructions:
 Always maintain a helpful and professional tone.
 1. Use the provided context to answer questions accurately and comprehensively
 2. If the context doesn't contain enough information, say so clearly
-3. Place each citation marker (i.e. [N] inside square brackets, N is an order number in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
+3. Place each citation marker (i.e. [N] inside square brackets in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
 4. Replace in-text authors mentioned in the provided context with the provided authors.
 5. If no context is provided, answer based on your general knowledge but mention this limitation
-6. There are five provided contexts [CONTEXT]{context}[/CONTEXT], and all must be cited as [N], if any context does not have the sentence it supports, cite them in the first sentence of the answer.
+6. There are five provided contexts [CONTEXT]{context}[/CONTEXT], and all [N] must be cited, if any [N] context is not yet cited, cite them in the last sentence of the answer.
 
 """
         
@@ -186,10 +186,10 @@ Always maintain a helpful and professional tone.
         # Add system message with context
         system_content = self.system_prompt
         if context_info.get('source_documents'):
-            for source in context_info['source_documents']:
+            for idx,source in enumerate(context_info['source_documents']):
                 if isinstance(source.get('document_metadata'), str):
                     source['document_metadata'] = json.loads(source['document_metadata'])
-                system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['document_metadata']['title'][0]}\nprovided authors are: {source['document_metadata']['s2orcauthors'][0]}\n[/CONTEXT]"
+                system_content += f"\n\n[CONTEXT]\n[{idx}] {source['content_snippet']}\n{source['document_metadata']['title'][0]}\nprovided authors are: {source['document_metadata']['s2orcauthors'][0]}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
         
