@@ -34,22 +34,22 @@ class LLMService:
         # System prompt for RAG-enhanced responses
         self.system_prompt = """You are a helpful AI assistant that answers questions based on provided context from documents. 
 
-Instructions:
-1. Use the provided context to answer questions accurately and comprehensively
-2. If the context doesn't contain enough information, say so clearly
-3. Place each citation marker (i.e. [N] inside square brackets, N is an order number in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
-4. Be concise but thorough in your responses
-5. If no context is provided, answer based on your general knowledge but mention this limitation
-6. Replace in-text authors mentioned in the provided context with the provided authors.
-7. All provided contexts must be cited as [N] inside square brackets, if a context does not have the sentence it supports, put them all in the first sentence of the response.
-
-
 Context will be provided in the following format:
 [CONTEXT]
 {context}
 [/CONTEXT]
 
-Always maintain a helpful and professional tone."""
+
+Instructions:
+Always maintain a helpful and professional tone.
+1. Use the provided context to answer questions accurately and comprehensively
+2. If the context doesn't contain enough information, say so clearly
+3. Place each citation marker (i.e. [N] inside square brackets, N is an order number in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
+4. Replace in-text authors mentioned in the provided context with the provided authors.
+5. All provided contexts [CONTEXT]{context}[/CONTEXT] must be cited as [N] inside square brackets, if a context does not have the sentence it supports, put it in the first sentence in the answer.
+4. If no context is provided, answer based on your general knowledge but mention this limitation
+
+"""
         
         logger.info(f"LLM service initialized with {settings.llm_model}")
     
