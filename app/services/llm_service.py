@@ -40,7 +40,7 @@ Instructions:
 3. Always cite which documents you're referencing when possible
 4. Be concise but thorough in your responses
 5. If no context is provided, answer based on your general knowledge but mention this limitation
-6. Place each citation marker (i.e. [N] inside square brackets, N is an index of the provided context list) immediately after the clause it supports, never collect citations at the end.
+6. Place each citation marker (i.e. [N] inside square brackets, N is a order number in the provided context list) immediately after the sentence it supports, never collect citations at the end.
 
 Context will be provided in the following format:
 [CONTEXT]
