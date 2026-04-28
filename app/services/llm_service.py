@@ -138,7 +138,7 @@ Always maintain a helpful and professional tone."""
                 self._generate_summary_included(user_query, context_info, response, model_kwargs),
                 #self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
             )
-            summary_included, summary_excluded = summary
+            summary_included, summary_excluded = summary['included'],summary['excluded']
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
             
@@ -393,8 +393,8 @@ Always maintain a helpful and professional tone."""
             else:
                 result = await self.chat_model.ainvoke(summary_messages)
         logger.info(f"Generate summary_included done {result.content}")
-        summary_res = json.loads(result.content)
-        return summary_res['included'],summary_res['excluded']
+        #summary_res = json.loads(result.content)
+        return result.content
 
     async def _generate_summary_excluded(self, user_query, context_info, response, model_kwargs):
         if context_info['source_documents_notused'] == []:
