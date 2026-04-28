@@ -135,8 +135,7 @@ Always maintain a helpful and professional tone."""
             logger.info(f"Generate response  done {response.content}")
             # In your main method (must be async):
             summary = await asyncio.gather(
-                self._generate_summary_included(user_query, context_info, response, model_kwargs),
-                #self._generate_summary_excluded(user_query, context_info, response, model_kwargs),
+                self._generate_summary_included(user_query, context_info, response, model_kwargs)
             )
             logger.info(f"Generate response  done {summary}")
             summary_included, summary_excluded = summary['included'],summary['excluded']
