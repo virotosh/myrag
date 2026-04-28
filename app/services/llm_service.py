@@ -305,16 +305,7 @@ Always maintain a helpful and professional tone."""
             4. Do not wrap topic descriptions in brackets.
             5. Do not include paper titles — only authors, venue, and a short topic phrase.
             6. End both fields with a period for consistency.
-            7. Return valid JSON: `{"included": "...", "excluded": "..."}`
-
-            ## Example Output
-
-            ```json
-            {
-              "included": "The cited works span from [2020] to [2023] and include [Tom Brown et al.] [NeurIPS] on few-shot learning with GPT-3, [Nikita Nangia et al.] [EMNLP] on bias evaluation, [Wayne Zhao et al.] [EMNLP-Industry Track] surveying large language model capabilities, [Yiming Sun et al.] [ACL] and [Pengfei Liu et al.] [ACL] on prompt quality and fine-tuning comparisons, and [Takeshi Kojima et al.] [NeurIPS] and [Weizhe Yuan et al.] [ACL] on multi-task performance and comparisons with traditional models.",
-              "excluded": "Additional works, not included in the context but potentially relevant, span from [2020] to [2023] and include [Colin Raffel et al.] [ICLR] on text-to-text transfer learning, [Sébastien Bubeck et al.] [FOCS] on reasoning capabilities of large models, [Xuezhi Wang et al.] [NeurIPS] on prompt engineering strategies, [Hugo Touvron et al.] [ICML] on efficient fine-tuning, and [Peter Henderson et al.] [ACL] on bias and fairness evaluation."
-            }
-            ```
+            7. Return valid JSON: `"included": "...", "excluded": "..."`
 
         """
         logger.info(f"summary_prompt {summary_prompt}")
