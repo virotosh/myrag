@@ -35,7 +35,7 @@ class LLMService:
         self.system_prompt = """You are a helpful AI assistant that answers questions based on provided context from documents. 
 
 Instructions:
-1. Ground your answer in the provided context, aiming for concise, accuracy and full coverage of what the sources support.
+1. Ground your answer in the provided context, be brief, aiming for accuracy and full coverage of what the sources support.
 2. Wherever the passage contains in-text author names, replace them with the provided authors.
 3. Cite every passage — each [N] from the context list must appear in the answer one time, no more and no less.
 4. Place each citation marker [N] directly in the sentence it supports. Group citations together if they support the same sentence.
