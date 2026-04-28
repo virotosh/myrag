@@ -322,7 +322,7 @@ Always maintain a helpful and professional tone."""
 
     async def _generate_summary(self, user_query, context_info, response, model_kwargs):
         if context_info['source_documents'] == []:
-            return ""
+            return {"included": "", "excluded": ""}
         summary_messages = self._build_messages_for_summary(
             user_query=user_query,
             context_info=context_info,
