@@ -184,8 +184,9 @@ Always maintain a helpful and professional tone."""
         # Add system message with context
         system_content = self.system_prompt
         if context_info.get('context_chunks'):
-            context_text = "\n\n".join(context_info['context_chunks'])
-            system_content += f"\n\n[CONTEXT]\n{context_text}\n[/CONTEXT]"
+            for chunk in context_info['context_chunks']:
+            #context_text = "\n\n".join(context_info['context_chunks'])
+                system_content += f"\n\n[CONTEXT]\n{chunk}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
         
