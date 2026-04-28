@@ -34,14 +34,9 @@ class LLMService:
         # System prompt for RAG-enhanced responses
         self.system_prompt = """You are a helpful AI assistant that answers questions based on provided context from documents. 
 
-Context will be provided in the following format:
-[CONTEXT]
-{context}
-[/CONTEXT]
 
 
 Instructions:
-Always maintain a helpful and professional tone.
 1. Use the provided context to answer questions accurately and comprehensively
 2. If the context doesn't contain enough information, say so clearly
 3. Replace in-text authors mentioned in the provided context with the provided authors.
@@ -56,7 +51,13 @@ Deploying large language models in real-world commercial environments can be cha
 Using already trained fixed language models for inference is more computationally feasible and accessible than continually training even larger models [3]."
 [1,2,5] does not have any sentence to support it, while [3] and [4] have a sentence supports it in the answer.
 
-Contexts:
+
+Context will be provided in the following format:
+[CONTEXT]
+{context}
+[/CONTEXT]
+
+Always maintain a helpful and professional tone.
 """
         
         logger.info(f"LLM service initialized with {settings.llm_model}")
