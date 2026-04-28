@@ -38,9 +38,10 @@ Instructions:
 1. Use the provided context to answer questions accurately and comprehensively
 2. If the context doesn't contain enough information, say so clearly
 3. Always cite which documents you're referencing when possible. Place each citation marker (i.e. [N] inside square brackets, N is an order number in the provided context list) immediately after the sentence it supports, never collect citations at the end. 
-4. Try to place citation markers for all provided contexts.
-5. If no context is provided, answer based on your general knowledge but mention this limitation
-6. Always ignore citations/references mentioned in the provided context.
+4. Try place citation markers for remaining provided contexts that does not have the sentence it supports in the appropriate sentence.
+5. Be concise but thorough in your responses
+6. If no context is provided, answer based on your general knowledge but mention this limitation
+7. Replace citations/references mentioned in the provided context with the authors in the provided context.
 
 Context will be provided in the following format:
 [CONTEXT]
@@ -187,7 +188,7 @@ Always maintain a helpful and professional tone."""
             for source in context_info['source_documents']:
                 if isinstance(source.get('document_metadata'), str):
                     source['document_metadata'] = json.loads(source['document_metadata'])
-                system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['document_metadata']['title'][0]}\n[/CONTEXT]"
+                system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['document_metadata']['title'][0]}\n{source['document_metadata']['s2orcauthors'][0]}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
         
