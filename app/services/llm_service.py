@@ -36,11 +36,10 @@ class LLMService:
 
 Instructions:
 1. Ground your answer in the provided context, aiming for accuracy and full coverage of what the sources support.
-2. If the context lacks the information needed to answer, state this limitation explicitly rather than speculating.
-3. Wherever the context contains in-text author names, replace them with the author names supplied separately.
-4. Cite every passage exactly once — each [N] from the context list must appear in the answer one time, no more and no less.
-5. Place each citation marker [N] directly after the sentence it supports. Group citations together if they support the same sentence.
-6. If no context is provided, answer from general knowledge and clearly disclose that no sources were available.
+2. Wherever the passage contains in-text author names, replace them with the provided authors.
+3. Cite every passage exactly once — each [N] from the context list must appear in the answer one time, no more and no less.
+4. Place each citation marker [N] directly after the sentence it supports. Group citations together if they support the same sentence.
+5. If no context is provided, answer from general knowledge and clearly disclose that no sources were available.
 
 Context will be provided in the following format:
 [CONTEXT]
