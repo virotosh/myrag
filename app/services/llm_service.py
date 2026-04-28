@@ -41,7 +41,7 @@ Instructions:
 4. Try place citation markers for remaining provided contexts that does not have the sentence it supports in the appropriate sentence.
 5. Be concise but thorough in your responses
 6. If no context is provided, answer based on your general knowledge but mention this limitation
-7. Replace citations/references mentioned in the provided context with the authors in the provided context.
+7. Replace in-text authors mentioned in the provided context with the authors in the provided context.
 
 Context will be provided in the following format:
 [CONTEXT]
