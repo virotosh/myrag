@@ -277,22 +277,22 @@ Always maintain a helpful and professional tone."""
 
             Context: {rag_content}
             ### `included` field
-            included Sources: {sources}
-            included authors: {authors}
-            included venues: {venues}
-            included topics: {topics}
-            included years: {years}
+            included Sources: {sources if sources else "empty"}
+            included authors: {authors if sources else "empty"}
+            included venues: {venues if sources else "empty"}
+            included topics: {topics if sources else "empty"}
+            included years: {years if sources else "empty"}
             Summarize works that ARE present in the provided Context, included sources, included authors, included venues, included topics, included years. Begin with:
             > "The cited works span from [EARLIEST_YEAR] to [LATEST_YEAR] and include..."
 
             Then list each work as: `[Authors] [Venue] on <brief topic>`, joined naturally with commas and "and". Group works by shared contribution where sensible (e.g., "[Author A et al.] [ACL] and [Author B et al.] [ACL] on prompt quality").
 
             ### `excluded` field
-            excluded Sources: {exc_sources}
-            excluded authors: {exc_authors}
-            excluded venues: {exc_venues}
-            excluded topics: {exc_topics}
-            excluded years: {exc_years}
+            excluded Sources: {exc_sources if exc_sources else "empty"}
+            excluded authors: {exc_authors if exc_sources else "empty"}
+            excluded venues: {exc_venues if exc_sources else "empty"}
+            excluded topics: {exc_topics if exc_sources else "empty"}
+            excluded years: {exc_years if exc_sources else "empty"}
             Summarize works that are RELEVANT to the topic but NOT in the provided Context, excluded sources, excluded authors, excluded venues, excluded topics, excluded years. Begin with:
             > "Additional works, not included in the context but potentially relevant, span from [EARLIEST_YEAR] to [LATEST_YEAR] and include..."
 
@@ -306,7 +306,7 @@ Always maintain a helpful and professional tone."""
             4. Do not wrap topic descriptions in brackets.
             5. Do not include paper titles — only authors, venue, and a short topic phrase.
             6. End both fields with a period for consistency.
-            7. Return valid JSON: `{{"included": "...", "excluded": "..."}}`
+            7. Return valid JSON: `{{"included": "...", "excluded": "..."}}`, put "" if field is empty
 
             ## Example Output
 
