@@ -40,6 +40,7 @@ Instructions:
 3. Always cite which documents you're referencing when possible
 4. Be concise but thorough in your responses
 5. If no context is provided, answer based on your general knowledge but mention this limitation
+6. Put number [N] as reference in the text if a context snippet is referred, N is an index in the provided context list
 
 Context will be provided in the following format:
 [CONTEXT]
