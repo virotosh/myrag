@@ -49,14 +49,14 @@ Always maintain a helpful and professional tone.
 5. All [N] must be cited, if any [N] context is not yet cited, put [N] in the first sentence of your answer.
 6. If no context is provided, answer based on your general knowledge but mention this limitation
 
-Example:
+For Example:
 "Large Language Models are large-scale pre-trained neural networks designed to perform various natural language tasks[1,2,5]. 
 These models are trained on vast amounts of text data and have demonstrated remarkable abilities to match or even surpass 
 Deploying large language models in real-world commercial environments can be challenging due to their large size and the need for high-quality training data [4].
 Using already trained fixed language models for inference is more computationally feasible and accessible than continually training even larger models [3]."
-
 [1,2,5] does not have any sentence to support it, while [3] and [4] have a sentence supports it in the answer.
 
+Contexts:
 """
         
         logger.info(f"LLM service initialized with {settings.llm_model}")
