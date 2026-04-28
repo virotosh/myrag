@@ -135,10 +135,9 @@ Always maintain a helpful and professional tone."""
             logger.info(f"Generate response  done {response.content}")
             # In your main method (must be async):
             summary = await asyncio.gather(
-                self._generate_summary_included(user_query, context_info, response, model_kwargs)
+                self._generate_summary(user_query, context_info, response, model_kwargs)
             )
-            logger.info(f"Generate response  done {summary}")
-            summary_included, summary_excluded = summary['included'],summary['excluded']
+            summary_included, summary_excluded = summary[0]['included'],summary[0]['excluded']
             
             processing_time = round((time.time() - start_time) * 1000)  # milliseconds
             
@@ -201,7 +200,7 @@ Always maintain a helpful and professional tone."""
         
         return messages
 
-    def _build_messages_for_summary_included(
+    def _build_messages_for_summary(
         self,
         user_query: str,
         context_info: Dict[str, Any],
@@ -321,63 +320,10 @@ Always maintain a helpful and professional tone."""
         return [HumanMessage(content=summary_prompt)]
 
 
-    def _build_messages_for_summary_excluded(
-        self,
-        user_query: str,
-        context_info: Dict[str, Any],
-        rag_content: str,
-    ) -> List:
-        # Slice FIRST, then parse — avoids touching unused records
-        sources_data = context_info['source_documents_notused'][:5]
-
-        for source in sources_data:
-            if isinstance(source.get('document_metadata'), str):
-                source['document_metadata'] = json.loads(source['document_metadata'])
-
-        metas = [source['document_metadata'] for source in sources_data]
-
-        sources = [m['title'] for m in metas]
-
-        # Flatten both author fields into a single deduplicated list
-        authors = list(dict.fromkeys(itertools.chain.from_iterable(
-            (m.get('s2orcauthors') or []) + (m.get('crossrefauthors') or [])
-            for m in metas
-        )))
-
-        venues = list(dict.fromkeys(m['shortvenue'] for m in metas))
-        years  = sorted(set(m['year'] for m in metas))
-
-        # Flatten all topics across excluded sources, deduplicate, take top 5
-        topics = list(dict.fromkeys(itertools.chain.from_iterable(
-            m.get('topics', []) for m in metas
-        )))[:5]
-
-        summary_prompt = f"""
-            Summary template:
-            "Several sources were excluded from the response spanning from <years>. 
-            These papers focus on a specific <theme>, published in <shortvenue> (use shortvenues in below Sources). 
-            Those <a list of all authors across document_sources> contribute <works>"
-
-            Write a brief summary (150 words max, use summary template above) describe what sources were excluded in the response for
-            the query "{user_query}", including inline 1-5 authors, important years, important venues (use acronyms), 
-            and use 5 most important keywords exists in "topics" key across all the excluded sources to describe the <theme> in the summary:
-
-            This is the response:
-            {rag_content}
-
-            Sources that were excluded from the above response:
-            {sources}
-            authors: {authors}
-            venues: {venues}
-            topics: {topics}
-            years: {years}
-        """
-        return [HumanMessage(content=summary_prompt)]
-
-    async def _generate_summary_included(self, user_query, context_info, response, model_kwargs):
+    async def _generate_summary(self, user_query, context_info, response, model_kwargs):
         if context_info['source_documents'] == []:
             return ""
-        summary_messages = self._build_messages_for_summary_included(
+        summary_messages = self._build_messages_for_summary(
             user_query=user_query,
             context_info=context_info,
             rag_content=response.content
@@ -392,32 +338,12 @@ Always maintain a helpful and professional tone."""
                 result = await temp_model.ainvoke(summary_messages)
             else:
                 result = await self.chat_model.ainvoke(summary_messages)
-        logger.info(f"Generate summary_included done {result.content}")
+        logger.info(f"Generate summary done {result.content}")
         summary_res = result.content
         if isinstance(summary_res, str):
             summary_res = json.loads(result.content)
         return summary_res
 
-    async def _generate_summary_excluded(self, user_query, context_info, response, model_kwargs):
-        if context_info['source_documents_notused'] == []:
-            return ""
-        summary_messages = self._build_messages_for_summary_excluded(
-            user_query=user_query,
-            context_info=context_info,
-            rag_content=response.content
-        )
-        with get_openai_callback() as cb:
-            if model_kwargs:
-                temp_model = ChatOpenAI(
-                    api_key=settings.openai_api_key,
-                    model_name=settings.llm_model,
-                    **model_kwargs
-                )
-                result = await temp_model.ainvoke(summary_messages)
-            else:
-                result = await self.chat_model.ainvoke(summary_messages)
-        #logger.info(f"Generate summary_excluded done {result.content}")
-        return result.content
     
     def _calculate_relevance_score(self, average_score: float, chunk_count: int) -> str:
         """Calculate relevance score category based on context quality."""
