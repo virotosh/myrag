@@ -306,6 +306,7 @@ Always maintain a helpful and professional tone."""
             5. Do not include paper titles — only authors, venue, and a short topic phrase.
             6. End both fields with a period for consistency.
             7. Return valid JSON: `{{"included": "...", "excluded": "..."}}`, put "" if field is empty
+            8. Topic descriptions must be copied exactly as provided in the input — character-for-character, no rewording, no synonyms, no paraphrasing. They are exact tokens used for downstream pattern matching and any deviation will break the system.
 
             ## Example Output
 
