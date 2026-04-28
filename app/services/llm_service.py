@@ -186,7 +186,7 @@ Always maintain a helpful and professional tone."""
         if context_info.get('sources_used'):
             for source in context_info['sources_used']:
             #context_text = "\n\n".join(context_info['context_chunks'])
-                system_content += f"\n\n[CONTEXT]\n{source['content_snippet']}\n{source['title'][0]}\n[/CONTEXT]"
+                system_content += f"\n\n[CONTEXT]\n{source['document_metadata']['content_snippet']}\n{source['document_metadata']['title'][0]}\n[/CONTEXT]"
         
         messages.append(SystemMessage(content=system_content))
         
