@@ -257,6 +257,7 @@ Always maintain a helpful and professional tone."""
         exc_topics = list(dict.fromkeys(itertools.chain.from_iterable(
             m.get('topics', []) for m in exc_metas
         )))[:5]
+        logger.info(f"exc_sources_data exc_sources_data {exc_sources_data}")
 
         summary_prompt = f"""
             # Citation Summary Generation Prompt
